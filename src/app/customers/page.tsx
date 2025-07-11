@@ -20,6 +20,7 @@ import {
 import { useState } from 'react';
 import { enhancedCustomers } from '@/data/enhanced-mock-data';
 import { formatCurrency, formatNumberWithCommas } from '@/utils/format';
+import { MOCK_DATA_CONFIG } from '@/utils/constants';
 
 export default function CustomersPage() {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -31,12 +32,13 @@ export default function CustomersPage() {
     lastActivityDays: 'all'
   });
 
-  // Calculate customer statistics
-  const totalCustomers = enhancedCustomers.length;
-  const activeCustomers = enhancedCustomers.filter(c => c.status === 'active').length;
-  const vipCustomers = enhancedCustomers.filter(c => c.isVip).length;
-  const highRiskCustomers = enhancedCustomers.filter(c => c.churnScore > 0.7).length;
-  const averageLifetimeValue = enhancedCustomers.reduce((sum, c) => sum + c.lifetimeValue, 0) / totalCustomers;
+  // Calculate customer statistics (use displayed total for stats, actual data for filtering)
+  const actualCustomerCount = enhancedCustomers.length;
+  const totalCustomers = MOCK_DATA_CONFIG.DISPLAYED_TOTAL; // Show 25k for stats
+  const activeCustomers = Math.floor(enhancedCustomers.filter(c => c.status === 'active').length * (MOCK_DATA_CONFIG.DISPLAYED_TOTAL / actualCustomerCount));
+  const vipCustomers = Math.floor(enhancedCustomers.filter(c => c.isVip).length * (MOCK_DATA_CONFIG.DISPLAYED_TOTAL / actualCustomerCount));
+  const highRiskCustomers = Math.floor(enhancedCustomers.filter(c => c.churnScore > 0.7).length * (MOCK_DATA_CONFIG.DISPLAYED_TOTAL / actualCustomerCount));
+  const averageLifetimeValue = enhancedCustomers.reduce((sum, c) => sum + c.lifetimeValue, 0) / actualCustomerCount;
 
   const handleExport = () => {
     

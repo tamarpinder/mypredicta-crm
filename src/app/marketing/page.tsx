@@ -23,10 +23,14 @@ import {
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { sampleCampaigns } from '@/data/sample-data';
+import { CampaignWizard } from '@/components/marketing/campaign-wizard';
+import { toastSuccess } from '@/hooks/use-toast';
 
 export default function MarketingPage() {
   const router = useRouter();
   const [selectedView, setSelectedView] = useState<'overview' | 'campaigns' | 'performance'>('overview');
+  const [showCampaignWizard, setShowCampaignWizard] = useState(false);
+  const [isScheduleMode, setIsScheduleMode] = useState(false);
 
   // Calculate campaign statistics
   const totalCampaigns = sampleCampaigns.length;
@@ -37,11 +41,33 @@ export default function MarketingPage() {
   const totalConverted = sampleCampaigns.reduce((sum, c) => sum + c.totalConverted, 0);
 
   const handleCreateCampaign = () => {
-    router.push('/campaigns');
+    setIsScheduleMode(false);
+    setShowCampaignWizard(true);
   };
 
   const handleScheduleCampaign = () => {
-    router.push('/campaigns?mode=schedule');
+    setIsScheduleMode(true);
+    setShowCampaignWizard(true);
+  };
+
+  const handleCampaignComplete = (campaignData: any) => {
+    console.log('Campaign created:', campaignData);
+    setShowCampaignWizard(false);
+    setIsScheduleMode(false);
+    
+    // Show success toast
+    toastSuccess(
+      'Campaign Created Successfully!', 
+      `Your campaign "${campaignData.name}" has been ${isScheduleMode ? 'scheduled' : 'created'} and is ready to launch.`
+    );
+    
+    // Navigate to campaigns page
+    router.push('/campaigns');
+  };
+
+  const handleCampaignCancel = () => {
+    setShowCampaignWizard(false);
+    setIsScheduleMode(false);
   };
 
   const formatCurrency = (value: number) => {
@@ -224,6 +250,18 @@ export default function MarketingPage() {
       
       {selectedView === 'performance' && (
         <CampaignPerformance campaigns={sampleCampaigns} />
+      )}
+
+      {/* Campaign Wizard Modal */}
+      {showCampaignWizard && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-auto">
+            <CampaignWizard
+              onComplete={handleCampaignComplete}
+              onCancel={handleCampaignCancel}
+            />
+          </div>
+        </div>
       )}
     </DashboardLayout>
   );

@@ -25,6 +25,7 @@ import {
   Globe,
   Zap
 } from 'lucide-react';
+import { toastSuccess } from '@/hooks/use-toast';
 import { AlertRule, AlertCondition, AlertAction } from '@/types';
 import { mockAlertRules } from '@/data/notification-mock-data';
 import { formatDate } from '@/utils/format';
@@ -160,6 +161,12 @@ export function AlertRules({
         cooldownPeriod: 1,
         targetAudience: []
       });
+      
+      // Show success toast
+      toastSuccess(
+        'Alert Rule Created Successfully!',
+        `Your rule "${newRule.name}" has been created and is now ${ruleToCreate.isActive ? 'active' : 'inactive'}.`
+      );
     }
   };
 

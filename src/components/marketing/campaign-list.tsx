@@ -51,15 +51,15 @@ interface CampaignListProps {
 
 export function CampaignList({ campaigns }: CampaignListProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
 
   // Filter campaigns
   const filteredCampaigns = campaigns.filter(campaign => {
     const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          campaign.subject.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = !statusFilter || campaign.status === statusFilter;
-    const matchesType = !typeFilter || campaign.type === typeFilter;
+    const matchesStatus = statusFilter === 'all' || campaign.status === statusFilter;
+    const matchesType = typeFilter === 'all' || campaign.type === typeFilter;
     
     return matchesSearch && matchesStatus && matchesType;
   });
@@ -157,7 +157,7 @@ export function CampaignList({ campaigns }: CampaignListProps) {
                   <SelectValue placeholder="All Statuses" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Statuses</SelectItem>
+                  <SelectItem value="all">All Statuses</SelectItem>
                   <SelectItem value="active">Active</SelectItem>
                   <SelectItem value="completed">Completed</SelectItem>
                   <SelectItem value="paused">Paused</SelectItem>
@@ -173,7 +173,7 @@ export function CampaignList({ campaigns }: CampaignListProps) {
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="email">Email</SelectItem>
                   <SelectItem value="sms">SMS</SelectItem>
                   <SelectItem value="push">Push</SelectItem>

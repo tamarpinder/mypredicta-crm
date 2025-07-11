@@ -1,32 +1,6 @@
 import { bahamianCustomers } from './bahamas-customers';
 import { AIInsights } from '@/types';
 
-// Generate realistic Bahamian customer names for AI insights
-const generateBahamianCustomerName = () => {
-  const firstNames = [
-    'Marcus', 'Destiny', 'Demetrius', 'Shantel', 'Gregory', 'Tamika', 'Kevin', 'Keisha',
-    'Andre', 'Latoya', 'Michael', 'Jasmine', 'Christopher', 'Monique', 'Anthony', 'Tiffany',
-    'James', 'Maria', 'David', 'Nicole', 'Robert', 'Ashley', 'William', 'Crystal',
-    'John', 'Michelle', 'Joseph', 'Kimberly', 'Thomas', 'Stephanie', 'Charles', 'Jennifer',
-    'Richard', 'Lisa', 'Daniel', 'Angela', 'Matthew', 'Sandra', 'Mark', 'Deborah',
-    'Steven', 'Rachel', 'Paul', 'Carolyn', 'Andrew', 'Janet', 'Joshua', 'Catherine',
-    'Kenneth', 'Frances', 'Kevin', 'Maria', 'Brian', 'Heather', 'George', 'Diane',
-    'Edward', 'Julie', 'Ronald', 'Joyce', 'Timothy', 'Victoria', 'Jason', 'Kelly'
-  ];
-  
-  const lastNames = [
-    'Williams', 'Johnson', 'Smith', 'Rolle', 'Ferguson', 'Thompson', 'Brown', 'Davis',
-    'Miller', 'Wilson', 'Taylor', 'Jones', 'White', 'Robinson', 'Clarke', 'Gibson',
-    'Russell', 'Major', 'Sands', 'Butler', 'Roberts', 'Moss', 'Stubbs', 'Bethel',
-    'Adderley', 'Knowles', 'Pinder', 'Cooper', 'McKenzie', 'Munroe', 'Forbes', 'Dean',
-    'Hall', 'Allen', 'Young', 'King', 'Wright', 'Lopez', 'Hill', 'Scott',
-    'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez'
-  ];
-  
-  const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-  const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-  return { firstName, lastName };
-};
 
 const generateLocation = () => {
   const locations = [
@@ -37,10 +11,17 @@ const generateLocation = () => {
   return locations[Math.floor(Math.random() * locations.length)];
 };
 
+// Available customer IDs from sample data
+const AVAILABLE_CUSTOMER_IDS = ['customer_1', 'customer_2', 'customer_3', 'customer_4', 'customer_5'];
+
+// Generate randomized customer selection
+const getRandomCustomerId = () => {
+  return AVAILABLE_CUSTOMER_IDS[Math.floor(Math.random() * AVAILABLE_CUSTOMER_IDS.length)];
+};
+
 // Generate 5000+ high-risk customers
 const generateHighRiskCustomers = (count: number = 5200) => {
   return Array.from({ length: count }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
     const location = generateLocation();
     const riskScore = 0.65 + Math.random() * 0.35; // High risk: 65-100%
     
@@ -77,8 +58,7 @@ const generateHighRiskCustomers = (count: number = 5200) => {
     ];
     
     return {
-      customerId: `risk_customer_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(), // Use actual customer IDs
       location,
       riskScore: +riskScore.toFixed(2),
       factors: selectedFactors,
@@ -92,14 +72,12 @@ const generateHighRiskCustomers = (count: number = 5200) => {
 // Generate advanced LTV predictions
 const generateLTVPredictions = (count: number = 2500) => {
   return Array.from({ length: count }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
     const location = generateLocation();
     const predictedValue = Math.floor(5000 + Math.random() * 250000);
     const confidence = Math.floor(70 + Math.random() * 30);
     
     return {
-      customerId: `ltv_customer_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(), // Use actual customer IDs
       location,
       predictedValue,
       confidence,
@@ -117,19 +95,30 @@ const generateGameRecommendations = (count: number = 1000) => {
     'Island Luck Lottery', 'Live Casino', 'Virtual Sports', 'Dice Games'
   ];
   
+  const reasons = [
+    'Based on recent betting patterns and preferences',
+    'Recommended for high engagement potential',
+    'Popular choice among similar players',
+    'Matches your gaming history profile',
+    'Trending game in your region',
+    'AI suggests based on win/loss patterns',
+    'Optimal for your current VIP level',
+    'High conversion rate for your segment'
+  ];
+  
   return Array.from({ length: count }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
     const location = generateLocation();
     const game = games[Math.floor(Math.random() * games.length)];
     
     return {
-      customerId: `game_rec_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(), // Use actual customer IDs
+      type: 'game',
       location,
       recommendedGame: game,
-      confidence: Math.floor(75 + Math.random() * 25),
-      reason: `Based on ${location} player preferences and betting history`,
-      expectedEngagement: Math.floor(20 + Math.random() * 60) + '%',
+      recommendedGames: [game], // For compatibility
+      confidence: (Math.floor(75 + Math.random() * 25) / 100), // Convert to decimal
+      reason: reasons[Math.floor(Math.random() * reasons.length)],
+      expectedEngagement: Math.floor(20 + Math.random() * 60),
       potentialRevenue: Math.floor(500 + Math.random() * 5000)
     };
   });
@@ -162,13 +151,11 @@ const generateBehavioralInsights = () => {
 // Generate retention predictions
 const generateRetentionPredictions = (count: number = 1500) => {
   return Array.from({ length: count }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
     const location = generateLocation();
     const retentionProbability = Math.random();
     
     return {
-      customerId: `retention_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(), // Use actual customer IDs
       location,
       retentionProbability: +(retentionProbability * 100).toFixed(1),
       riskLevel: retentionProbability > 0.7 ? 'Low' : retentionProbability > 0.4 ? 'Medium' : 'High',
@@ -182,15 +169,25 @@ const generateRetentionPredictions = (count: number = 1500) => {
   });
 };
 
+// Shuffle array function for better randomization
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export const advancedAIInsights: AIInsights = {
-  churnPrediction: generateHighRiskCustomers().slice(0, 50), // Show top 50 in UI
-  lifetimeValuePrediction: generateLTVPredictions().slice(0, 25),
-  gameRecommendations: generateGameRecommendations().slice(0, 20),
+  churnPrediction: shuffleArray(generateHighRiskCustomers()).slice(0, 10), // Limit to 10 for better UX
+  lifetimeValuePrediction: shuffleArray(generateLTVPredictions()).slice(0, 10), // Limit to 10 for better UX
+  gameRecommendations: shuffleArray(generateGameRecommendations()).slice(0, 10), // Limit to 10 for better UX
   
   // Extended insights
-  highRiskCustomers: generateHighRiskCustomers(),
+  highRiskCustomers: shuffleArray(generateHighRiskCustomers()),
   behavioralInsights: generateBehavioralInsights(),
-  retentionPredictions: generateRetentionPredictions(),
+  retentionPredictions: shuffleArray(generateRetentionPredictions()),
   
   // Summary statistics
   totalHighRiskCustomers: 5200,
@@ -199,30 +196,137 @@ export const advancedAIInsights: AIInsights = {
   lastUpdated: new Date().toISOString(),
   
   // Advanced predictions
-  crossSellOpportunities: Array.from({ length: 800 }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
+  crossSellOpportunities: shuffleArray(Array.from({ length: 800 }, (_, i) => {
+    const products = [
+      ['Sports Betting'], ['Slots'], ['Live Casino'], ['Poker'], ['Roulette']
+    ];
+    const recommendedProducts = [
+      ['Island Luck Lottery', 'Live Casino'], 
+      ['Sports Betting', 'Baccarat'], 
+      ['Slots', 'Poker'], 
+      ['Virtual Sports', 'Dice Games'],
+      ['Live Casino', 'Blackjack']
+    ];
+    
     return {
-      customerId: `cross_sell_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(),
       location: generateLocation(),
-      currentProducts: ['Sports Betting'],
-      recommendedProducts: ['Island Luck Lottery', 'Live Casino'],
+      currentProducts: products[Math.floor(Math.random() * products.length)],
+      recommendedProducts: recommendedProducts[Math.floor(Math.random() * recommendedProducts.length)],
       conversionProbability: Math.floor(30 + Math.random() * 50),
       potentialRevenue: Math.floor(1000 + Math.random() * 8000)
     };
-  }).slice(0, 15),
+  })).slice(0, 10),
   
   // VIP upgrade candidates
-  vipUpgradeCandidates: Array.from({ length: 300 }, (_, i) => {
-    const { firstName, lastName } = generateBahamianCustomerName();
+  vipUpgradeCandidates: shuffleArray(Array.from({ length: 300 }, (_, i) => {
+    const currentTiers = ['Regular', 'Bronze'];
+    const targetTiers = ['Silver', 'Gold', 'Platinum'];
+    
     return {
-      customerId: `vip_candidate_${i + 1}`,
-      customerName: `${firstName} ${lastName}`,
+      customerId: getRandomCustomerId(),
       location: generateLocation(),
-      currentTier: 'Regular',
-      targetTier: ['Silver', 'Gold'][Math.floor(Math.random() * 2)],
+      currentTier: currentTiers[Math.floor(Math.random() * currentTiers.length)],
+      targetTier: targetTiers[Math.floor(Math.random() * targetTiers.length)],
       upgradeScore: Math.floor(70 + Math.random() * 30),
       monthsToUpgrade: Math.floor(1 + Math.random() * 6)
     };
-  }).slice(0, 12)
+  })).slice(0, 10),
+
+  // Promotional Offers
+  promotionalOffers: shuffleArray(Array.from({ length: 500 }, (_, i) => {
+    const offerTypes = [
+      'Deposit Match Bonus', 'Free Spins', 'Cashback Offer', 'Reload Bonus', 
+      'VIP Bonus', 'Welcome Package', 'Weekend Special', 'Loyalty Reward'
+    ];
+    
+    const descriptions = [
+      '100% match on your next deposit up to $500',
+      '50 free spins on selected slots',
+      '20% cashback on losses this week',
+      '75% reload bonus for existing players',
+      'Exclusive VIP bonus - 150% match',
+      'Welcome package: 200% + 100 free spins',
+      'Weekend special: Double your deposit',
+      'Loyalty points converted to bonus cash'
+    ];
+    
+    const gameCategories = [
+      'All Games', 'Slots Only', 'Table Games', 'Live Casino', 
+      'Sports Betting', 'Lottery Games', 'Video Poker'
+    ];
+    
+    const offerType = offerTypes[Math.floor(Math.random() * offerTypes.length)];
+    
+    return {
+      customerId: getRandomCustomerId(),
+      location: generateLocation(),
+      offerType,
+      title: offerType,
+      description: descriptions[Math.floor(Math.random() * descriptions.length)],
+      bonusAmount: Math.floor(50 + Math.random() * 950),
+      bonusPercentage: Math.floor(25 + Math.random() * 175),
+      gameCategory: gameCategories[Math.floor(Math.random() * gameCategories.length)],
+      minDeposit: Math.floor(10 + Math.random() * 90),
+      maxBonus: Math.floor(100 + Math.random() * 900),
+      wagering: Math.floor(20 + Math.random() * 40) + 'x',
+      validDays: Math.floor(7 + Math.random() * 23),
+      conversionProbability: Math.floor(40 + Math.random() * 50),
+      expectedRevenue: Math.floor(200 + Math.random() * 1800),
+      urgency: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)],
+      personalizedReason: [
+        'Based on recent deposit pattern',
+        'Matches your favorite game category',
+        'Perfect for your VIP level',
+        'Recommended for high engagement',
+        'Tailored to your betting history'
+      ][Math.floor(Math.random() * 5)]
+    };
+  })).slice(0, 10),
+
+  // Experience Recommendations  
+  experienceRecommendations: shuffleArray(Array.from({ length: 400 }, (_, i) => {
+    const experienceTypes = [
+      'VIP Program Upgrade', 'Personal Account Manager', 'Exclusive Tournaments',
+      'Live Dealer Experience', 'Mobile App Features', 'Loyalty Program Benefits',
+      'Custom Game Limits', 'Priority Support', 'Exclusive Events'
+    ];
+    
+    const benefits = [
+      'Faster withdrawals and higher limits',
+      'Dedicated support and personalized service',
+      'Access to high-stakes tournaments',
+      'Premium live dealer tables',
+      'Enhanced mobile gaming features',
+      'Increased loyalty point earning rates',
+      'Customizable betting limits',
+      '24/7 priority customer support',
+      'Invitation to exclusive casino events'
+    ];
+    
+    const experienceType = experienceTypes[Math.floor(Math.random() * experienceTypes.length)];
+    
+    return {
+      customerId: getRandomCustomerId(),
+      location: generateLocation(),
+      experienceType,
+      title: experienceType,
+      description: benefits[Math.floor(Math.random() * benefits.length)],
+      implementation: [
+        'Automatic enrollment', 'Contact support to activate', 
+        'Available in account settings', 'Requires verification'
+      ][Math.floor(Math.random() * 4)],
+      timeToImplement: Math.floor(1 + Math.random() * 7) + ' days',
+      expectedSatisfaction: Math.floor(75 + Math.random() * 25),
+      retentionImpact: Math.floor(15 + Math.random() * 35) + '%',
+      priority: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)],
+      personalizedReason: [
+        'Based on your gaming preferences',
+        'Recommended for your activity level',
+        'Perfect match for your VIP status',
+        'Enhances your favorite games',
+        'Improves your overall experience'
+      ][Math.floor(Math.random() * 5)]
+    };
+  })).slice(0, 10)
 };

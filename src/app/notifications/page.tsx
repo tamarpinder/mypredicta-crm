@@ -15,7 +15,7 @@ export default function NotificationsPage() {
     <div className="flex items-center gap-3">
       <Badge variant="outline" className="gap-1 text-white border-white/30">
         <Bell className="h-3 w-3" />
-        {unreadCount + mockNotificationStats.unread} Unread
+        {unreadCount} Unread
       </Badge>
       <Button variant="outline" className="gap-2">
         <Download className="h-4 w-4" />

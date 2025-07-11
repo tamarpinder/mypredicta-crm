@@ -29,7 +29,9 @@ import {
   MessageSquare,
   Route,
   DollarSign,
-  Shield
+  Shield,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import { Notification, NotificationStats } from '@/types';
 import { mockNotifications, mockNotificationStats } from '@/data/notification-mock-data';
@@ -93,6 +95,7 @@ export function NotificationCenter({
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedNotifications, setExpandedNotifications] = useState<Set<string>>(new Set());
 
   // Combine store notifications with mock notifications
   const allNotifications = [
@@ -114,6 +117,20 @@ export function NotificationCenter({
     ...mockNotificationsList
   ];
 
+  // Calculate dynamic stats
+  const dynamicStats = {
+    ...stats,
+    total: allNotifications.length,
+    unread: allNotifications.filter(n => !n.isRead).length,
+    priority: {
+      ...stats.priority,
+      critical: allNotifications.filter(n => n.priority === 'critical').length,
+      high: allNotifications.filter(n => n.priority === 'high').length,
+      medium: allNotifications.filter(n => n.priority === 'medium').length,
+      low: allNotifications.filter(n => n.priority === 'low').length,
+    }
+  };
+
   // Filter notifications based on selected filters
   const filteredNotifications = allNotifications.filter(notification => {
     const matchesFilter = selectedFilter === 'all' || 
@@ -127,26 +144,33 @@ export function NotificationCenter({
   });
 
   const handleNotificationClick = (notification: Notification) => {
+    // Toggle expansion
+    const newExpanded = new Set(expandedNotifications);
+    if (newExpanded.has(notification.id)) {
+      newExpanded.delete(notification.id);
+    } else {
+      newExpanded.add(notification.id);
+    }
+    setExpandedNotifications(newExpanded);
+
     if (!notification.isRead) {
       handleMarkAsRead(notification.id);
     }
     onNotificationClick?.(notification);
-    if (notification.actionUrl) {
-      window.location.href = notification.actionUrl;
-    }
   };
 
   const handleMarkAsRead = (notificationId: string) => {
-    setNotifications(prev => 
-      prev.map(n => 
-        n.id === notificationId ? { ...n, isRead: true } : n
-      )
-    );
+    // Check if it's a store notification
+    const storeNotification = storeNotifications.find(n => n.id === notificationId);
+    if (storeNotification) {
+      markAsRead(notificationId);
+    }
     onMarkAsRead?.(notificationId);
   };
 
   const handleMarkAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    // Mark all store notifications as read
+    markAllAsRead();
     onMarkAllAsRead?.();
   };
 
@@ -201,15 +225,34 @@ export function NotificationCenter({
             <Badge variant="outline" className={`text-xs ${priorityColors[notification.priority]}`}>
               {notification.priority}
             </Badge>
+            {expandedNotifications.has(notification.id) ? (
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            )}
             {!notification.isRead && (
               <div className="w-2 h-2 bg-blue-600 rounded-full" />
             )}
           </div>
         </div>
         
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-          {notification.message}
+        <p className={`text-sm text-muted-foreground mb-2 ${!expandedNotifications.has(notification.id) ? 'line-clamp-2' : ''}`}>
+          {notification.message || notification.description}
         </p>
+        
+        {expandedNotifications.has(notification.id) && notification.metadata && Object.keys(notification.metadata).length > 0 && (
+          <div className="bg-muted/50 p-3 rounded-md mb-2">
+            <h5 className="text-xs font-medium text-muted-foreground mb-2">Additional Details:</h5>
+            <div className="space-y-1">
+              {Object.entries(notification.metadata).map(([key, value]) => (
+                <div key={key} className="flex justify-between text-xs">
+                  <span className="font-medium">{key}:</span>
+                  <span className="text-muted-foreground">{String(value)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -265,9 +308,9 @@ export function NotificationCenter({
         <div className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
           <h2 className="text-lg font-semibold">Notifications</h2>
-          {stats.unread > 0 && (
+          {dynamicStats.unread > 0 && (
             <Badge variant="destructive" className="text-xs">
-              {stats.unread}
+              {dynamicStats.unread}
             </Badge>
           )}
         </div>
@@ -302,7 +345,7 @@ export function NotificationCenter({
             <div className="flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-orange-600" />
               <div>
-                <div className="text-2xl font-bold">{stats.unread}</div>
+                <div className="text-2xl font-bold">{dynamicStats.unread}</div>
                 <div className="text-sm text-muted-foreground">Unread</div>
               </div>
             </div>

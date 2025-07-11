@@ -84,4 +84,4 @@ function generateBahamianCustomer(index: number): Customer {
   };
 }
 
-export const bahamianCustomers: Customer[] = Array.from({ length: 50 }, (_, i) => generateBahamianCustomer(i));
+export const bahamianCustomers: Customer[] = Array.from({ length: 5000 }, (_, i) => generateBahamianCustomer(i));

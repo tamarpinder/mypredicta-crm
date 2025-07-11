@@ -19,6 +19,8 @@ import {
 import { AIInsights } from '@/types';
 import { sampleCustomers } from '@/data/sample-data';
 import { formatNumber } from '@/utils/format';
+import { advancedAIInsights } from '@/data/advanced-ai-insights';
+import { toastSuccess } from '@/hooks/use-toast';
 
 interface RecommendationEngineProps {
   recommendations: AIInsights['gameRecommendations'];
@@ -28,8 +30,10 @@ interface RecommendationEngineProps {
 export function RecommendationEngine({ recommendations, compact = false }: RecommendationEngineProps) {
   // For now, treat all recommendations as game recommendations since that's what we have in the data
   const gameRecommendations = recommendations;
-  const offerRecommendations: any[] = [];
-  const experienceRecommendations: any[] = [];
+  
+  // Get promotional offers and experience recommendations from advanced AI insights
+  const offerRecommendations = advancedAIInsights.promotionalOffers || [];
+  const experienceRecommendations = advancedAIInsights.experienceRecommendations || [];
 
 
   const getRecommendationColor = (type: string) => {
@@ -53,6 +57,49 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
       lifetimeValue: 0,
       segment: 'regular'
     };
+  };
+
+  // Action handlers with success toasts
+  const handleSendRecommendation = (customerName: string, type: string) => {
+    toastSuccess(
+      'Recommendation Sent!',
+      `Game recommendation has been sent to ${customerName} successfully.`
+    );
+  };
+
+  const handleSendOffer = (customerName: string, offerType: string) => {
+    toastSuccess(
+      'Offer Sent!', 
+      `${offerType} has been sent to ${customerName} successfully.`
+    );
+  };
+
+  const handleImplementExperience = (customerName: string, experienceType: string) => {
+    toastSuccess(
+      'Experience Implemented!',
+      `${experienceType} has been implemented for ${customerName}.`
+    );
+  };
+
+  const handleDeployAllRecommendations = () => {
+    toastSuccess(
+      'All Recommendations Deployed!',
+      `Successfully deployed ${gameRecommendations.length} game recommendations to targeted customers.`
+    );
+  };
+
+  const handleDeployAllOffers = () => {
+    toastSuccess(
+      'All Offers Deployed!',
+      `Successfully deployed ${offerRecommendations.length} promotional offers to targeted customers.`
+    );
+  };
+
+  const handleImplementAllExperiences = () => {
+    toastSuccess(
+      'All Experiences Implemented!',
+      `Successfully implemented ${experienceRecommendations.length} experience improvements.`
+    );
   };
 
 
@@ -180,7 +227,7 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
               <Gamepad2 className="h-5 w-5" />
               Game Recommendations
             </CardTitle>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleDeployAllRecommendations}>
               Deploy All Recommendations
             </Button>
           </div>
@@ -256,7 +303,12 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" className="gap-1">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="gap-1"
+                      onClick={() => handleSendRecommendation(`${customer.firstName} ${customer.lastName}`, 'game')}
+                    >
                       <Zap className="h-4 w-4" />
                       Send Recommendation
                     </Button>
@@ -276,21 +328,224 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
         </CardContent>
       </Card>
 
-      {/* Coming Soon: Offer Recommendations */}
+      {/* Promotional Offers */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Coins className="h-5 w-5" />
-            Promotional Offers
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Coins className="h-5 w-5" />
+              Promotional Offers
+            </CardTitle>
+            <Button size="sm" variant="outline" onClick={handleDeployAllOffers}>
+              Deploy All Offers
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8">
-            <Coins className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
-            <p className="text-muted-foreground">
-              Personalized promotional offers based on customer behavior and preferences.
-            </p>
+          <div className="space-y-4">
+            {offerRecommendations.map((offer: any, index: number) => {
+              const customer = getCustomerInfo(offer.customerId);
+              return (
+                <div key={index} className="border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback>
+                          {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-medium">
+                          {customer.firstName} {customer.lastName}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {offer.location} • {offer.gameCategory}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <Badge className={getRecommendationColor('offer')}>
+                        {offer.offerType}
+                      </Badge>
+                      <div className="text-sm text-muted-foreground mt-1">
+                        {offer.conversionProbability}% conversion rate
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span>Conversion Probability</span>
+                      <span>{offer.conversionProbability}%</span>
+                    </div>
+                    <Progress value={offer.conversionProbability} className="h-2" />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-3">
+                    <div>
+                      <div className="text-sm text-muted-foreground">Bonus Amount</div>
+                      <div className="font-medium text-green-600">
+                        {offer.bonusPercentage}% up to ${offer.maxBonus}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-muted-foreground">Expected Revenue</div>
+                      <div className="font-medium text-blue-600">
+                        ${offer.expectedRevenue}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-3 text-sm">
+                    <div>
+                      <div className="text-muted-foreground">Min Deposit</div>
+                      <div className="font-medium">${offer.minDeposit}</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">Wagering</div>
+                      <div className="font-medium">{offer.wagering}</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">Valid</div>
+                      <div className="font-medium">{offer.validDays} days</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <div className="text-sm text-muted-foreground mb-2">AI Reasoning:</div>
+                    <div className="text-sm bg-green-50 p-2 rounded-lg">
+                      {offer.personalizedReason}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="gap-1"
+                      onClick={() => handleSendOffer(`${customer.firstName} ${customer.lastName}`, offer.offerType)}
+                    >
+                      <Zap className="h-4 w-4" />
+                      Send Offer
+                    </Button>
+                    <Button size="sm" variant="outline" className="gap-1">
+                      <Settings className="h-4 w-4" />
+                      Customize
+                    </Button>
+                    <Button size="sm" className="gap-1">
+                      <User className="h-4 w-4" />
+                      View Profile
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Experience Recommendations */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="h-5 w-5" />
+              Experience Recommendations
+            </CardTitle>
+            <Button size="sm" variant="outline" onClick={handleImplementAllExperiences}>
+              Implement All
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {experienceRecommendations.map((experience: any, index: number) => {
+              const customer = getCustomerInfo(experience.customerId);
+              return (
+                <div key={index} className="border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback>
+                          {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-medium">
+                          {customer.firstName} {customer.lastName}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {experience.location} • Current Segment: {customer.segment}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <Badge className={getRecommendationColor('experience')}>
+                        {experience.experienceType}
+                      </Badge>
+                      <div className="text-sm text-muted-foreground mt-1">
+                        {experience.expectedSatisfaction}% satisfaction
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span>Expected Satisfaction</span>
+                      <span>{experience.expectedSatisfaction}%</span>
+                    </div>
+                    <Progress value={experience.expectedSatisfaction} className="h-2" />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-3">
+                    <div>
+                      <div className="text-sm text-muted-foreground">Retention Impact</div>
+                      <div className="font-medium text-green-600">
+                        +{experience.retentionImpact}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-muted-foreground">Implementation Time</div>
+                      <div className="font-medium text-blue-600">
+                        {experience.timeToImplement}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <div className="text-sm text-muted-foreground">Implementation Method</div>
+                    <div className="font-medium">{experience.implementation}</div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <div className="text-sm text-muted-foreground mb-2">AI Reasoning:</div>
+                    <div className="text-sm bg-purple-50 p-2 rounded-lg">
+                      {experience.personalizedReason}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="gap-1"
+                      onClick={() => handleImplementExperience(`${customer.firstName} ${customer.lastName}`, experience.experienceType)}
+                    >
+                      <Zap className="h-4 w-4" />
+                      Implement
+                    </Button>
+                    <Button size="sm" variant="outline" className="gap-1">
+                      <Settings className="h-4 w-4" />
+                      Customize
+                    </Button>
+                    <Button size="sm" className="gap-1">
+                      <User className="h-4 w-4" />
+                      View Profile
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

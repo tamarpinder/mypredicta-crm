@@ -31,6 +31,7 @@ import {
   Crown,
   UserCog
 } from 'lucide-react';
+import { toastSuccess } from '@/hooks/use-toast';
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -122,6 +123,12 @@ export default function SettingsPage() {
   const handleSave = () => {
     // Save settings logic
     console.log('Settings saved:', settings);
+    
+    // Show success toast
+    toastSuccess(
+      'Settings Saved Successfully!',
+      'Your preferences have been updated and saved.'
+    );
   };
 
   const handleReset = () => {
@@ -148,6 +155,12 @@ export default function SettingsPage() {
         status: 'active'
       });
       setShowAddUserDialog(false);
+      
+      // Show success toast
+      toastSuccess(
+        'User Added Successfully!',
+        `${newUser.name} has been added to the system with ${newUser.role} permissions.`
+      );
     }
   };
 

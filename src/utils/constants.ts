@@ -69,7 +69,8 @@ export const REVENUE_TARGET = {
 } as const;
 
 export const MOCK_DATA_CONFIG = {
-  TOTAL_CUSTOMERS: 25_000,
+  TOTAL_CUSTOMERS: 5_000, // Reduced for performance while keeping stats realistic
+  DISPLAYED_TOTAL: 25_000, // Keep this for statistics display
   ACTIVE_CUSTOMERS_PERCENTAGE: 0.75,
   VIP_CUSTOMERS_PERCENTAGE: 0.02,
   HIGH_VALUE_PERCENTAGE: 0.08,

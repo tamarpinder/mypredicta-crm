@@ -24,6 +24,7 @@ import {
   BarChart3,
   Settings
 } from 'lucide-react';
+import { toastSuccess } from '@/hooks/use-toast';
 
 interface ABTest {
   id: string;
@@ -458,6 +459,12 @@ export function ABTestingFramework() {
       splitPercentage: 50,
       duration: 14
     });
+    
+    // Show success toast
+    toastSuccess(
+      'A/B Test Created Successfully!',
+      `Your test "${newTest.name}" has been created and is ready to be configured and launched.`
+    );
   };
 
   if (isCreating) {

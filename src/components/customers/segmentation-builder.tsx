@@ -27,6 +27,7 @@ import {
   Clock,
   Gamepad2
 } from 'lucide-react';
+import { toastSuccess } from '@/hooks/use-toast';
 import { Customer } from '@/types';
 
 interface SegmentationBuilderProps {
@@ -214,6 +215,12 @@ export function SegmentationBuilder({ customers, onSave, onCancel }: Segmentatio
       createdAt: new Date().toISOString()
     };
     onSave(segment);
+    
+    // Show success toast
+    toastSuccess(
+      'Segment Created Successfully!',
+      `Your segment "${segmentName}" has been created with ${matchedCustomers.length} matched customers.`
+    );
   };
 
   const renderConditionValue = (condition: Condition) => {
