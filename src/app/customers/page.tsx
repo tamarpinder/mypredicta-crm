@@ -37,11 +37,11 @@ export default function CustomersPage() {
   const averageLifetimeValue = sampleCustomers.reduce((sum, c) => sum + c.lifetimeValue, 0) / totalCustomers;
 
   const handleExport = () => {
-    console.log('Exporting customer data...');
+    
   };
 
   const handleAddCustomer = () => {
-    console.log('Adding new customer...');
+    
   };
 
   const statsCards = [

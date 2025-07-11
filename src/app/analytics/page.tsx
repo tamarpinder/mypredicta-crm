@@ -15,16 +15,12 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  LineChart,
   Line,
   PieChart,
   Pie,
   Cell,
   ComposedChart,
   Area,
-  AreaChart,
-  RadialBarChart,
-  RadialBar,
   Legend
 } from 'recharts';
 import { 
@@ -32,20 +28,13 @@ import {
   TrendingDown, 
   Users, 
   DollarSign, 
-  Calendar,
   Download,
-  Filter,
-  Eye,
-  Target,
   Gamepad2,
-  Star,
   AlertTriangle,
   Activity,
-  MapPin,
-  Clock,
-  BarChart3
+  MapPin
 } from 'lucide-react';
-import { formatCurrency, formatNumber, formatPercentage } from '@/utils/format';
+import { formatCurrency, formatNumber } from '@/utils/format';
 
 const revenueData = [
   { month: 'Jan', revenue: 4200000, deposits: 3800000, withdrawals: 2100000, newCustomers: 1250 },
@@ -94,18 +83,22 @@ const campaignPerformanceData = [
   { name: 'Social Media', sent: 45000, opened: 36000, clicked: 12600, converted: 3150, roi: 98 }
 ];
 
+interface TooltipPayload {
+  name: string;
+  value: number;
+  color: string;
+}
+
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState('6M');
-  const [selectedMetric, setSelectedMetric] = useState('revenue');
 
-
-  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any[]; label?: string }) => {
+  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: TooltipPayload[]; label?: string }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
           <p className="text-sm font-medium mb-2">{label}</p>
           <div className="space-y-1">
-            {payload.map((item: any, index: number) => (
+            {payload.map((item: TooltipPayload, index: number) => (
               <div key={index} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm">

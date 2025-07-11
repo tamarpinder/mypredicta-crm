@@ -10,11 +10,11 @@ import { sampleDashboardMetrics } from '@/data/sample-data';
 
 export default function Home() {
   const handleRefresh = () => {
-    console.log('Refreshing data...');
+    
   };
 
   const handleExport = () => {
-    console.log('Exporting data...');
+    
   };
 
   return (

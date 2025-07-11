@@ -113,23 +113,23 @@ export function CustomerFilters({ filters, onFiltersChange }: CustomerFiltersPro
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor="country">Location</Label>
           <Select value={filters.country} onValueChange={(value) => updateFilter('country', value)}>
             <SelectTrigger>
-              <SelectValue placeholder="All Countries" />
+              <SelectValue placeholder="All Locations" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Countries</SelectItem>
-              <SelectItem value="United States">United States</SelectItem>
-              <SelectItem value="Canada">Canada</SelectItem>
-              <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-              <SelectItem value="Australia">Australia</SelectItem>
-              <SelectItem value="Germany">Germany</SelectItem>
-              <SelectItem value="France">France</SelectItem>
-              <SelectItem value="Spain">Spain</SelectItem>
-              <SelectItem value="Italy">Italy</SelectItem>
-              <SelectItem value="Netherlands">Netherlands</SelectItem>
-              <SelectItem value="Bahamas">Bahamas</SelectItem>
+              <SelectItem value="all">All Locations</SelectItem>
+              <SelectItem value="Nassau">Nassau</SelectItem>
+              <SelectItem value="Freeport">Freeport</SelectItem>
+              <SelectItem value="Marsh Harbour">Marsh Harbour</SelectItem>
+              <SelectItem value="Exuma">Exuma</SelectItem>
+              <SelectItem value="Andros Town">Andros Town</SelectItem>
+              <SelectItem value="Governor's Harbour">Governor&apos;s Harbour</SelectItem>
+              <SelectItem value="Cable Beach">Cable Beach</SelectItem>
+              <SelectItem value="Paradise Island">Paradise Island</SelectItem>
+              <SelectItem value="Lyford Cay">Lyford Cay</SelectItem>
+              <SelectItem value="Old Fort Bay">Old Fort Bay</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -198,7 +198,7 @@ export function CustomerFilters({ filters, onFiltersChange }: CustomerFiltersPro
 
           {filters.country && (
             <Badge variant="secondary" className="gap-1">
-              Country: {filters.country}
+              Location: {filters.country}
               <Button
                 variant="ghost"
                 size="sm"

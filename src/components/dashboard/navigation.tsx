@@ -19,7 +19,8 @@ import {
   Bell,
   Target,
   FlaskConical,
-  Route
+  Route,
+  AlertTriangle
 } from 'lucide-react';
 import { COMPANY_INFO } from '@/utils/constants';
 import Image from 'next/image';
@@ -86,6 +87,13 @@ const navigationItems = [
     label: 'AI Insights',
     href: '/ai-insights',
     icon: Brain,
+    badge: null
+  },
+  {
+    id: 'alerts',
+    label: 'Alert Rules',
+    href: '/alerts',
+    icon: AlertTriangle,
     badge: null
   },
   {
@@ -206,10 +214,12 @@ export function Navigation({ collapsed = false, onToggle }: NavigationProps) {
         
         {!collapsed && (
           <div className="mt-3 space-y-1">
-            <Button variant="ghost" size="sm" className="w-full justify-start">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
-            </Button>
+            <Link href="/notifications">
+              <Button variant="ghost" size="sm" className="w-full justify-start">
+                <Bell className="h-4 w-4 mr-2" />
+                Notifications
+              </Button>
+            </Link>
             <Button variant="ghost" size="sm" className="w-full justify-start">
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out

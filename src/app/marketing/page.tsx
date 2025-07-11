@@ -35,11 +35,11 @@ export default function MarketingPage() {
   const totalConverted = sampleCampaigns.reduce((sum, c) => sum + c.totalConverted, 0);
 
   const handleCreateCampaign = () => {
-    console.log('Creating new campaign...');
+    
   };
 
   const handleImportCampaign = () => {
-    console.log('Importing campaign...');
+    
   };
 
   const formatCurrency = (value: number) => {

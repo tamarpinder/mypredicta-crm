@@ -363,7 +363,7 @@ export function ABTestingFramework() {
   };
 
   const handleCreateTest = () => {
-    console.log('Creating new A/B test:', newTest);
+    
     setIsCreating(false);
     setNewTest({
       name: '',

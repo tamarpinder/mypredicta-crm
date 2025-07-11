@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Navigation } from './navigation';
+import { PageTransition } from '@/components/ui/page-transition';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -60,7 +61,9 @@ export function DashboardLayout({
           {/* Page Content */}
           <div className="flex-1 overflow-auto">
             <div className="p-6">
-              {children}
+              <PageTransition>
+                {children}
+              </PageTransition>
             </div>
           </div>
         </main>

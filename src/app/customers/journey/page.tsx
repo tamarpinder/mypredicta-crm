@@ -51,12 +51,12 @@ export default function CustomerJourneyPage() {
   };
 
   const handleSaveJourney = (journey: JourneyFlow) => {
-    console.log('Saving journey:', journey);
+    
     setIsBuilding(false);
   };
 
   const handlePreviewJourney = (journey: JourneyFlow) => {
-    console.log('Previewing journey:', journey);
+    
     setSelectedFlow(journey);
     setActiveTab('visualizer');
   };

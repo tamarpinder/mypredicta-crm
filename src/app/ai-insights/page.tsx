@@ -36,15 +36,15 @@ export default function AIInsightsPage() {
   const totalRecommendations = sampleAIInsights.gameRecommendations.length;
 
   const handleRefreshModels = () => {
-    console.log('Refreshing AI models...');
+    // Refresh AI models
   };
 
   const handleExportInsights = () => {
-    console.log('Exporting AI insights...');
+    // Export AI insights
   };
 
   const handleConfigureAI = () => {
-    console.log('Configuring AI settings...');
+    // Configure AI settings
   };
 
 

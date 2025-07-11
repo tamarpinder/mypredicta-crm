@@ -40,9 +40,10 @@ const firstNames = {
 
 const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Thompson', 'White', 'Harris', 'Clark'];
 
-const countries = ['United States', 'Canada', 'United Kingdom', 'Australia', 'New Zealand', 'Germany', 'France', 'Spain', 'Italy', 'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Finland', 'Belgium', 'Switzerland', 'Austria', 'Ireland', 'Portugal', 'Bahamas'];
+// Focus on The Bahamas - primary market
+const countries = ['Bahamas'];
 
-const cities = ['New York', 'Los Angeles', 'London', 'Toronto', 'Sydney', 'Melbourne', 'Vancouver', 'Berlin', 'Paris', 'Madrid', 'Amsterdam', 'Stockholm', 'Copenhagen', 'Helsinki', 'Brussels', 'Zurich', 'Vienna', 'Dublin', 'Lisbon', 'Nassau'];
+const cities = ['Nassau', 'Freeport', 'Marsh Harbour', 'Exuma', 'Andros Town', 'Governor\'s Harbour', 'Arthur\'s Town', 'Clarence Town', 'Dunmore Town', 'Spanish Wells', 'Cable Beach', 'Paradise Island', 'Lyford Cay', 'Old Fort Bay', 'Coral Harbour', 'Carmichael', 'Gambier Village', 'Fox Hill', 'Adelaide Village', 'Bain Town'];
 
 const gameNames = {
   sports: ['Premier League', 'NBA', 'NFL', 'Champions League', 'World Cup', 'Tennis Masters', 'Formula 1', 'Cricket World Cup', 'Golf Majors', 'Olympics'],
@@ -132,7 +133,7 @@ export const generateCustomers = (count: number): Customer[] => {
       firstName,
       lastName,
       email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@email.com`,
-      phone: `+1${getRandomBetween(2000000000, 9999999999)}`,
+      phone: `+1-242-${getRandomBetween(100, 999)}-${getRandomBetween(1000, 9999)}`,
       dateOfBirth: getRandomDate(new Date(1945, 0, 1), new Date(2005, 11, 31)),
       gender,
       country: getRandomChoice(countries),

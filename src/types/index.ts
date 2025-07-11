@@ -246,3 +246,102 @@ export interface JourneyTemplate {
   targetSegments: string[];
   expectedConversionRate: number;
 }
+
+export interface Notification {
+  id: string;
+  type: 'system' | 'customer' | 'campaign' | 'journey' | 'revenue' | 'alert';
+  category: 'info' | 'warning' | 'error' | 'success';
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  title: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  actionRequired: boolean;
+  actionUrl?: string;
+  actionText?: string;
+  metadata: {
+    customerId?: string;
+    campaignId?: string;
+    journeyId?: string;
+    amount?: number;
+    threshold?: number;
+    source?: string;
+  };
+  expiresAt?: string;
+  acknowledgedBy?: string;
+  acknowledgedAt?: string;
+}
+
+export interface AlertRule {
+  id: string;
+  name: string;
+  description: string;
+  type: 'threshold' | 'anomaly' | 'event' | 'schedule';
+  isActive: boolean;
+  conditions: AlertCondition[];
+  actions: AlertAction[];
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  cooldownPeriod: number;
+  targetAudience: string[];
+  createdBy: string;
+  createdDate: string;
+  lastTriggered?: string;
+  triggerCount: number;
+}
+
+export interface AlertCondition {
+  id: string;
+  field: string;
+  operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_equal' | 'less_equal' | 'contains' | 'not_contains' | 'in' | 'not_in';
+  value: string | number | boolean | string[];
+  logicalOperator?: 'AND' | 'OR';
+}
+
+export interface AlertAction {
+  id: string;
+  type: 'notification' | 'email' | 'sms' | 'webhook' | 'task';
+  target: string;
+  template?: string;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  delay?: number;
+}
+
+export interface NotificationPreferences {
+  userId: string;
+  inApp: boolean;
+  email: boolean;
+  sms: boolean;
+  push: boolean;
+  categories: {
+    system: boolean;
+    customer: boolean;
+    campaign: boolean;
+    journey: boolean;
+    revenue: boolean;
+    alert: boolean;
+  };
+  priorities: {
+    low: boolean;
+    medium: boolean;
+    high: boolean;
+    critical: boolean;
+  };
+  quietHours: {
+    enabled: boolean;
+    start: string;
+    end: string;
+  };
+  frequency: 'immediate' | 'hourly' | 'daily' | 'weekly';
+}
+
+export interface NotificationStats {
+  total: number;
+  unread: number;
+  byType: Record<string, number>;
+  byCategory: Record<string, number>;
+  byPriority: Record<string, number>;
+  recentActivity: {
+    timestamp: string;
+    count: number;
+  }[];
+}
