@@ -50,7 +50,7 @@ export default function AuthPage() {
         email: email || 'admin@predicta.com',
         firstName: 'Admin',
         lastName: 'User',
-        company: 'Predicta CRM',
+        company: 'myPredicta',
         role: 'admin',
         loginTime: new Date().toISOString(),
         rememberMe

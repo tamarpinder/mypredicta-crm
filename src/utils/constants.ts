@@ -9,7 +9,7 @@ export const BRAND_COLORS = {
 } as const;
 
 export const COMPANY_INFO = {
-  name: 'Predicta CRM',
+  name: 'myPredicta',
   tagline: 'AI-Powered Customer Intelligence for iGaming',
   description: 'Advanced CRM platform designed specifically for gambling companies',
   logo: '/assets/1024x1024 - Transparent.png',

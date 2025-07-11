@@ -5,7 +5,6 @@ import { CustomersTable } from '@/components/customers/customers-table';
 import { CustomerFilters } from '@/components/customers/customer-filters';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PremiumCard, PremiumCardContent, PremiumCardHeader, PremiumCardTitle } from '@/components/ui/premium-card';
 import { 
   Users, 
@@ -21,6 +20,7 @@ import { useState } from 'react';
 import { enhancedCustomers } from '@/data/enhanced-mock-data';
 import { formatCurrency, formatNumberWithCommas } from '@/utils/format';
 import { MOCK_DATA_CONFIG } from '@/utils/constants';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CustomersPage() {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -40,12 +40,52 @@ export default function CustomersPage() {
   const highRiskCustomers = Math.floor(enhancedCustomers.filter(c => c.churnScore > 0.7).length * (MOCK_DATA_CONFIG.DISPLAYED_TOTAL / actualCustomerCount));
   const averageLifetimeValue = enhancedCustomers.reduce((sum, c) => sum + c.lifetimeValue, 0) / actualCustomerCount;
 
+  const { toast } = useToast();
+
   const handleExport = () => {
-    
+    try {
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        customers: enhancedCustomers.slice(0, 1000), // Export first 1000 for demo
+        statistics: {
+          totalCustomers: displayedTotalCustomers,
+          activeCustomers,
+          newCustomers,
+          highRiskCustomers,
+          averageLifetimeValue
+        }
+      };
+      
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `customers-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Export Successful",
+        description: "Customer data has been exported successfully.",
+      });
+    } catch (error) {
+      console.error('Customer export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: "Unable to export customer data. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAddCustomer = () => {
-    
+    toast({
+      title: "Add Customer",
+      description: "Customer registration form will be available in the next update.",
+    });
   };
 
   const statsCards = [

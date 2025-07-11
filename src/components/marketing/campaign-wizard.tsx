@@ -21,9 +21,10 @@ import {
   Save,
   Wand2
 } from 'lucide-react';
+import { CampaignData } from '@/types';
 
 interface CampaignWizardProps {
-  onComplete: (campaignData: any) => void;
+  onComplete: (campaignData: CampaignData) => void;
   onCancel: () => void;
   initialType?: string;
   isScheduleMode?: boolean;
@@ -138,7 +139,7 @@ export function CampaignWizard({ onComplete, onCancel, initialType, isScheduleMo
     setIsSubmitting(false);
   };
 
-  const updateCampaignData = (section: string, data: any) => {
+  const updateCampaignData = (section: string, data: Partial<CampaignData>) => {
     setCampaignData(prev => ({
       ...prev,
       [section]: { ...prev[section as keyof typeof prev], ...data }

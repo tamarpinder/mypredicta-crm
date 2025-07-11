@@ -51,7 +51,7 @@ export function GamePerformanceChart({ className }: GamePerformanceChartProps) {
     return (
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         {payload?.map((entry: any, index: number) => (
-          <div key={index} className="flex items-center gap-2">
+          <div key={`legend-${entry.value || index}`} className="flex items-center gap-2">
             <div 
               className="w-3 h-3 rounded-full" 
               style={{ backgroundColor: entry.color }}
@@ -149,7 +149,7 @@ export function GamePerformanceChart({ className }: GamePerformanceChartProps) {
                   dataKey="revenue"
                 >
                   {gamePerformanceData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${entry.name || index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />

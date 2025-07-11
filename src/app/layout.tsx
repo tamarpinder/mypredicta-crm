@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Predicta CRM - AI-Powered Customer Intelligence",
+  title: "myPredicta - AI-Powered Customer Intelligence",
   description: "Advanced CRM solution for gambling companies with AI-driven insights and customer management",
 };
 

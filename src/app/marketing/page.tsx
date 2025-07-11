@@ -28,6 +28,7 @@ import {
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { sampleCampaigns } from '@/data/sample-data';
+import { CampaignData } from '@/types';
 import { CampaignWizard } from '@/components/marketing/campaign-wizard';
 import { QuickCampaignForm } from '@/components/marketing/quick-campaign-form';
 import { toastSuccess } from '@/hooks/use-toast';
@@ -65,8 +66,7 @@ export default function MarketingPage() {
     setShowQuickForm(true);
   };
 
-  const handleQuickFormComplete = (campaignData: any) => {
-    console.log('Quick campaign created:', campaignData);
+  const handleQuickFormComplete = (campaignData: CampaignData) => {
     setShowQuickForm(false);
     
     toastSuccess(
@@ -82,8 +82,7 @@ export default function MarketingPage() {
     setCampaignType('');
   };
 
-  const handleCampaignComplete = (campaignData: any) => {
-    console.log('Campaign created:', campaignData);
+  const handleCampaignComplete = (campaignData: CampaignData) => {
     setShowCampaignWizard(false);
     setIsScheduleMode(false);
     

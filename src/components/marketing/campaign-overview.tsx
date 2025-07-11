@@ -115,7 +115,7 @@ export function CampaignOverview({ campaigns }: CampaignOverviewProps) {
           <p className="text-sm font-medium mb-2">{label}</p>
           <div className="space-y-1">
             {payload?.map((item: any, index: number) => (
-              <div key={index} className="flex items-center gap-2">
+              <div key={`tooltip-${item.name || item.dataKey || index}`} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm">{item.name}: {item.name.includes('Revenue') || item.name.includes('Cost') ? formatCurrency(item.value) : item.value}</span>
               </div>
@@ -243,7 +243,7 @@ export function CampaignOverview({ campaigns }: CampaignOverviewProps) {
                     dataKey="value"
                   >
                     {statusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
+                      <Cell key={`cell-${entry.name || index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -292,7 +292,7 @@ export function CampaignOverview({ campaigns }: CampaignOverviewProps) {
             {performanceByType.map((type, index) => {
               const Icon = getTypeIcon(type.type);
               return (
-                <div key={index} className="p-4 border rounded-lg">
+                <div key={`type-${type.type || index}`} className="p-4 border rounded-lg">
                   <div className="flex items-center gap-2 mb-3">
                     <Icon className="h-5 w-5 text-primary" />
                     <span className="font-medium capitalize">{type.type}</span>

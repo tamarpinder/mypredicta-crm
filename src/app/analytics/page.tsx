@@ -105,7 +105,7 @@ export default function AnalyticsPage() {
           <p className="text-sm font-medium mb-2">{label}</p>
           <div className="space-y-1">
             {payload.map((item: TooltipPayload, index: number) => (
-              <div key={index} className="flex items-center gap-2">
+              <div key={`tooltip-${item.name}-${item.dataKey || index}`} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm">
                   {item.name}: {item.name.includes('Revenue') || item.name.includes('Deposits') || item.name.includes('Withdrawals') 
@@ -287,7 +287,7 @@ export default function AnalyticsPage() {
                   label={({ name, percentage }) => `${name} ${percentage}%`}
                 >
                   {gameTypeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${entry.name || index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip 
@@ -309,7 +309,7 @@ export default function AnalyticsPage() {
           <CardContent>
             <div className="space-y-4">
               {customerSegmentData.map((segment, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={`segment-${segment.segment || index}`} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
                     <div 
                       className="w-4 h-4 rounded-full" 
@@ -347,7 +347,7 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               {geographicData.map((country, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div key={`country-${country.country || index}`} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <span className="text-xs font-medium">{country.country.slice(0, 2).toUpperCase()}</span>
@@ -450,7 +450,7 @@ export default function AnalyticsPage() {
                   .sort(([,a], [,b]) => b - a)
                   .slice(0, 5)
                   .map(([location, count], index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                    <div key={`location-${location || index}`} className="flex items-center justify-between p-2 bg-muted/50 rounded">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="font-medium">{location}</span>
@@ -469,7 +469,7 @@ export default function AnalyticsPage() {
                   .sort(([,a], [,b]) => b - a)
                   .slice(0, 5)
                   .map(([game, count], index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                    <div key={`game-${game || index}`} className="flex items-center justify-between p-2 bg-muted/50 rounded">
                       <span className="font-medium">{game}</span>
                       <div className="flex items-center gap-2">
                         <Progress value={(count / lotteryStats.totalWinners) * 100} className="w-20 h-2" />
@@ -494,7 +494,7 @@ export default function AnalyticsPage() {
         <CardContent>
           <div className="space-y-4">
             {campaignPerformanceData.map((campaign, index) => (
-              <div key={index} className="border rounded-lg p-4">
+              <div key={`campaign-${campaign.name || index}`} className="border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <h4 className="font-medium">{campaign.name}</h4>

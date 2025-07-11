@@ -122,7 +122,6 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     // Save settings logic
-    console.log('Settings saved:', settings);
     
     // Show success toast
     toastSuccess(

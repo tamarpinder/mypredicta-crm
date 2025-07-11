@@ -154,7 +154,7 @@ export function CampaignPerformance({ campaigns }: CampaignPerformanceProps) {
           <p className="text-sm font-medium mb-2">{label}</p>
           <div className="space-y-1">
             {payload?.map((item: any, index: number) => (
-              <div key={index} className="flex items-center gap-2">
+              <div key={`tooltip-${item.name}-${item.dataKey}`} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm">{item.name}: {item.name.includes('Revenue') || item.name.includes('Cost') ? formatCurrency(item.value) : `${item.value.toFixed(1)}${item.name.includes('Rate') || item.name.includes('ROI') ? '%' : ''}`}</span>
               </div>
@@ -385,7 +385,7 @@ export function CampaignPerformance({ campaigns }: CampaignPerformanceProps) {
         <CardContent>
           <div className="space-y-4">
             {topCampaigns.map((campaign, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+              <div key={`campaign-${campaign.name}-${campaign.id || index}`} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-full text-sm font-bold">
                     {index + 1}

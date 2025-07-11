@@ -9,19 +9,16 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Trophy, 
   Search, 
-  Filter,
   Download,
   Plus,
-  TrendingUp,
   Calendar,
-  DollarSign,
   MapPin,
   Activity
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/utils/format';
 import { sampleLotteryWinners, lotteryStats, lotteryGames } from '@/data/lottery-data';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Table,
   TableBody,
@@ -37,6 +34,7 @@ export default function LotteryPage() {
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [dateRange, setDateRange] = useState('30d');
+  const { toast } = useToast();
 
   // Filter winners based on search and filters
   const filteredWinners = sampleLotteryWinners.filter(winner => {
@@ -54,11 +52,49 @@ export default function LotteryPage() {
   const locations = [...new Set(sampleLotteryWinners.map(w => w.location))].sort();
 
   const handleAddDraw = () => {
-    // Handle adding a new lottery draw
+    toast({
+      title: "Add New Draw",
+      description: "New lottery draw creation form will be available in the next update.",
+    });
   };
 
   const handleExport = () => {
-    // Handle export functionality
+    try {
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        winners: filteredWinners,
+        statistics: {
+          totalPrizeAmount: filteredWinners.reduce((sum, w) => sum + w.prizeAmount, 0),
+          totalWinners: filteredWinners.length,
+          gamesPlayed: [...new Set(filteredWinners.map(w => w.gameName))].length
+        },
+        games: lotteryGames,
+        stats: lotteryStats
+      };
+      
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `lottery-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Export Successful",
+        description: "Lottery data has been exported successfully.",
+      });
+    } catch (error) {
+      console.error('Lottery export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: "Unable to export lottery data. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getPrizeColor = (amount: number) => {

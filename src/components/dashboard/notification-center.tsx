@@ -90,7 +90,7 @@ export function NotificationCenter({
     clearNotifications 
   } = useNotificationStore();
   
-  const [mockNotificationsList] = useState<Notification[]>(mockNotifications);
+  const [mockNotificationsList, setMockNotificationsList] = useState<Notification[]>(mockNotifications);
   const [stats, setStats] = useState<NotificationStats>(mockNotificationStats);
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
@@ -164,6 +164,15 @@ export function NotificationCenter({
     const storeNotification = storeNotifications.find(n => n.id === notificationId);
     if (storeNotification) {
       markAsRead(notificationId);
+    } else {
+      // Mark mock notification as read
+      setMockNotificationsList(prev => 
+        prev.map(notification => 
+          notification.id === notificationId 
+            ? { ...notification, isRead: true }
+            : notification
+        )
+      );
     }
     onMarkAsRead?.(notificationId);
   };
@@ -171,11 +180,21 @@ export function NotificationCenter({
   const handleMarkAllAsRead = () => {
     // Mark all store notifications as read
     markAllAsRead();
+    
+    // Mark all mock notifications as read
+    setMockNotificationsList(prev => 
+      prev.map(notification => ({ ...notification, isRead: true }))
+    );
+    
     onMarkAllAsRead?.();
   };
 
   const handleDeleteNotification = (notificationId: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== notificationId));
+    // Try to delete from mock notifications first
+    setMockNotificationsList(prev => prev.filter(n => n.id !== notificationId));
+    
+    // Note: Store notifications are handled automatically by the store
+    // This deletion is just for visual purposes in the UI
     onDeleteNotification?.(notificationId);
   };
 

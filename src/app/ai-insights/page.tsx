@@ -21,12 +21,15 @@ import {
   Zap
 } from 'lucide-react';
 import { useState } from 'react';
-import { advancedAIInsights as sampleAIInsights, sampleCustomers } from '@/data/sample-data';
+import { sampleCustomers } from '@/data/sample-data';
 import { advancedAIInsights } from '@/data/advanced-ai-insights';
 import { formatCurrency } from '@/utils/format';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AIInsightsPage() {
   const [selectedView, setSelectedView] = useState<'overview' | 'churn' | 'ltv' | 'recommendations'>('overview');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { toast } = useToast();
 
   // Calculate AI insights statistics using advanced data
   const highRiskCustomers = advancedAIInsights.totalHighRiskCustomers || 5200;
@@ -36,16 +39,77 @@ export default function AIInsightsPage() {
   const averageLTVPrediction = advancedAIInsights.lifetimeValuePrediction?.reduce((sum, c) => sum + c.predictedValue, 0) / totalLTVPredictions || 85000;
   const totalRecommendations = advancedAIInsights.gameRecommendations?.length || 20;
 
-  const handleRefreshModels = () => {
-    // Refresh AI models
+  const handleRefreshModels = async () => {
+    setIsRefreshing(true);
+    try {
+      // Simulate AI model refresh
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast({
+        title: "AI Models Refreshed",
+        description: "All prediction models have been updated with latest data.",
+      });
+    } catch (error) {
+      console.error('AI model refresh failed:', error);
+      toast({
+        title: "Refresh Failed",
+        description: "Unable to refresh AI models. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleExportInsights = () => {
-    // Export AI insights
+    try {
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        insights: {
+          churnPrediction: advancedAIInsights.churnPrediction,
+          lifetimeValuePrediction: advancedAIInsights.lifetimeValuePrediction,
+          gameRecommendations: advancedAIInsights.gameRecommendations,
+          riskAssessment: advancedAIInsights.riskAssessment
+        },
+        statistics: {
+          highRiskCustomers,
+          totalPredictions,
+          averageRiskScore,
+          totalLTVPredictions,
+          averageLTVPrediction,
+          totalRecommendations
+        }
+      };
+      
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ai-insights-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Export Successful",
+        description: "AI insights data has been exported successfully.",
+      });
+    } catch (error) {
+      console.error('AI insights export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: "Unable to export AI insights. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleConfigureAI = () => {
-    // Configure AI settings
+    toast({
+      title: "AI Configuration",
+      description: "AI configuration panel will be available in the next update.",
+    });
   };
 
 
@@ -55,9 +119,9 @@ export default function AIInsightsPage() {
         <Activity className="h-3 w-3" />
         Models Updated: 2 hours ago
       </Badge>
-      <Button variant="outline" onClick={handleRefreshModels} className="gap-2">
-        <RefreshCw className="h-4 w-4" />
-        Refresh Models
+      <Button variant="outline" onClick={handleRefreshModels} className="gap-2" disabled={isRefreshing}>
+        <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+        {isRefreshing ? 'Refreshing...' : 'Refresh Models'}
       </Button>
       <Button variant="outline" onClick={handleExportInsights} className="gap-2">
         <Download className="h-4 w-4" />

@@ -45,7 +45,7 @@ export function LotteryDashboard({ className }: LotteryDashboardProps) {
     { name: 'Jackpot ($100K+)', value: stats.prizesByTier.jackpot, color: '#ef4444' }
   ];
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any[]; label?: string }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
@@ -239,8 +239,8 @@ export function LotteryDashboard({ className }: LotteryDashboardProps) {
                   dataKey="value"
                   label={({ name, value }) => `${name}: ${value}`}
                 >
-                  {tierData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  {tierData.map((entry) => (
+                    <Cell key={`cell-${entry.name}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -281,7 +281,7 @@ export function LotteryDashboard({ className }: LotteryDashboardProps) {
           <CardContent>
             <div className="space-y-4">
               {gameData.map((game, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div key={`game-${game.name}`} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <span className="text-xs font-medium">{index + 1}</span>

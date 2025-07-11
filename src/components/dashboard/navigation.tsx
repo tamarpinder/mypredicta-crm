@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/auth-context';
-import { mockNotificationStats } from '@/data/notification-mock-data';
+import { useNotificationStore } from '@/stores/notification-store';
 import { 
   LayoutDashboard, 
   Users, 
@@ -115,6 +115,7 @@ interface NavigationProps {
 export function Navigation({ collapsed = false, onToggle }: NavigationProps) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotificationStore();
   
   return (
     <div className={cn(
@@ -127,7 +128,7 @@ export function Navigation({ collapsed = false, onToggle }: NavigationProps) {
           "flex items-center gap-3 transition-all duration-300",
           collapsed && "justify-center"
         )}>
-          <div className="relative w-[72px] h-[72px] flex-shrink-0">
+          <div className="relative w-[144px] h-[144px] flex-shrink-0">
             <Image
               src={COMPANY_INFO.logo}
               alt={COMPANY_INFO.name}
@@ -221,9 +222,9 @@ export function Navigation({ collapsed = false, onToggle }: NavigationProps) {
               <Button variant="ghost" size="sm" className="w-full justify-start text-white/80 hover:text-white hover:bg-[var(--color-predicta-gold)]/20">
                 <Bell className="h-4 w-4 mr-2" />
                 Notifications
-                {mockNotificationStats.unread > 0 && (
+                {unreadCount > 0 && (
                   <Badge variant="destructive" className="ml-auto text-xs">
-                    {mockNotificationStats.unread}
+                    {unreadCount}
                   </Badge>
                 )}
               </Button>

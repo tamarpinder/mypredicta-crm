@@ -17,9 +17,10 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
+import { CampaignData } from '@/types';
 
 interface QuickCampaignFormProps {
-  onSubmit: (campaignData: any) => void;
+  onSubmit: (campaignData: CampaignData) => void;
   onCancel: () => void;
   templateId?: string;
 }

@@ -408,3 +408,47 @@ export interface NotificationStats {
     count: number;
   }[];
 }
+
+// Chart and UI related types
+export interface ChartTooltipPayload {
+  active?: boolean;
+  payload?: {
+    name: string;
+    value: number;
+    color: string;
+    dataKey?: string;
+  }[];
+  label?: string;
+}
+
+export interface ChartTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
+export interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+  cx?: number;
+  cy?: number;
+}
+
+export interface CampaignData {
+  name: string;
+  type: string;
+  target: string;
+  budget: number;
+  startDate: string;
+  endDate: string;
+  content: string;
+  subject?: string;
+}
+
+export interface SegmentData {
+  name: string;
+  description: string;
+  conditions: any[];
+  estimatedSize: number;
+}
