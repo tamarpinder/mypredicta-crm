@@ -328,6 +328,7 @@ const mockABTests: ABTest[] = [
 export function ABTestingFramework() {
   const [selectedTest, setSelectedTest] = useState<ABTest | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [tests, setTests] = useState<ABTest[]>(mockABTests);
   const [newTest, setNewTest] = useState({
     name: '',
     type: 'email',
@@ -338,9 +339,9 @@ export function ABTestingFramework() {
     duration: 14
   });
 
-  const runningTests = mockABTests.filter(test => test.status === 'running');
-  const completedTests = mockABTests.filter(test => test.status === 'completed');
-  const draftTests = mockABTests.filter(test => test.status === 'draft');
+  const runningTests = tests.filter(test => test.status === 'running');
+  const completedTests = tests.filter(test => test.status === 'completed');
+  const draftTests = tests.filter(test => test.status === 'draft');
 
   const getStatusColor = (status: ABTest['status']) => {
     switch (status) {
@@ -363,7 +364,90 @@ export function ABTestingFramework() {
   };
 
   const handleCreateTest = () => {
-    
+    if (!newTest.name.trim() || !newTest.hypothesis.trim()) {
+      return;
+    }
+
+    const testTemplate: ABTest = {
+      id: `ab_${Date.now()}`,
+      name: newTest.name,
+      status: 'draft',
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + newTest.duration * 24 * 60 * 60 * 1000).toISOString(),
+      type: newTest.type as 'email' | 'sms' | 'push' | 'landing-page' | 'offer',
+      variants: [
+        {
+          id: 'control',
+          name: 'Control',
+          description: 'Original version',
+          content: {
+            subject: 'Control version subject',
+            body: 'Control version content',
+            ctaText: 'Call to Action'
+          },
+          metrics: {
+            sent: 0,
+            delivered: 0,
+            opened: 0,
+            clicked: 0,
+            converted: 0,
+            revenue: 0
+          },
+          performance: {
+            deliveryRate: 0,
+            openRate: 0,
+            clickRate: 0,
+            conversionRate: 0,
+            revenuePerUser: 0
+          }
+        },
+        {
+          id: 'variant',
+          name: 'Variant',
+          description: 'Test version',
+          content: {
+            subject: 'Variant version subject',
+            body: 'Variant version content',
+            ctaText: 'Call to Action'
+          },
+          metrics: {
+            sent: 0,
+            delivered: 0,
+            opened: 0,
+            clicked: 0,
+            converted: 0,
+            revenue: 0
+          },
+          performance: {
+            deliveryRate: 0,
+            openRate: 0,
+            clickRate: 0,
+            conversionRate: 0,
+            revenuePerUser: 0
+          }
+        }
+      ],
+      metrics: {
+        totalParticipants: 0,
+        duration: newTest.duration,
+        confidenceLevel: 95,
+        pValue: 0,
+        uplift: 0,
+        projectedRevenue: 0
+      },
+      targetAudience: {
+        segment: newTest.audience,
+        size: 0,
+        splitPercentage: newTest.splitPercentage
+      },
+      hypothesis: newTest.hypothesis,
+      primaryMetric: newTest.primaryMetric,
+      secondaryMetrics: ['open_rate', 'click_rate'],
+      confidence: 95,
+      statisticalSignificance: 0
+    };
+
+    setTests(prev => [testTemplate, ...prev]);
     setIsCreating(false);
     setNewTest({
       name: '',

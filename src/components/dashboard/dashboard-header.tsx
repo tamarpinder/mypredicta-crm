@@ -87,16 +87,16 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
       {/* Quick Actions */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-lg font-semibold text-[var(--color-predicta-navy)]">
             Today&apos;s Overview
           </h2>
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-[var(--color-predicta-neutral)]">
             Real-time insights and key metrics
           </p>
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="gap-2 text-white border-white/30">
+          <Badge variant="outline" className="gap-2 text-[var(--color-predicta-navy)] border-gray-300">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             Live Data
           </Badge>
@@ -105,7 +105,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
             variant="outline" 
             size="sm" 
             onClick={onRefresh}
-            className="gap-2 text-white border-white/30 hover:bg-white/10"
+            className="gap-2 text-[var(--color-predicta-navy)] border-gray-300 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
           >
             <RefreshCw className="h-4 w-4" />
             Refresh
@@ -115,7 +115,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
             variant="outline" 
             size="sm" 
             onClick={onExport}
-            className="gap-2 text-white border-white/30 hover:bg-white/10"
+            className="gap-2 text-[var(--color-predicta-navy)] border-gray-300 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
           >
             <Download className="h-4 w-4" />
             Export

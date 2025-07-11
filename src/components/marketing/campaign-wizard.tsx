@@ -37,6 +37,7 @@ type Step = 'template' | 'targeting' | 'content' | 'schedule' | 'review';
 
 export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
   const [currentStep, setCurrentStep] = useState<Step>('template');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [campaignData, setCampaignData] = useState({
     name: '',
     type: '',
@@ -111,8 +112,14 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    setIsSubmitting(true);
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
     onComplete(campaignData);
+    setIsSubmitting(false);
   };
 
   const updateCampaignData = (section: string, data: any) => {
@@ -647,9 +654,14 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
           </Button>
           
           {stepIndex === steps.length - 1 ? (
-            <Button onClick={handleComplete} className="gap-2">
+            <Button 
+              onClick={handleComplete} 
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              className="gap-2"
+            >
               <Send className="h-4 w-4" />
-              Launch Campaign
+              {isSubmitting ? 'Launching...' : 'Launch Campaign'}
             </Button>
           ) : (
             <Button onClick={handleNext} className="gap-2">

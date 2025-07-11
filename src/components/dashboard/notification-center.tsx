@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNotificationStore } from '@/stores/notification-store';
 import { 
   Bell, 
   Settings, 
@@ -79,14 +80,42 @@ export function NotificationCenter({
   onDeleteNotification,
   className = ''
 }: NotificationCenterProps) {
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const { 
+    notifications: storeNotifications, 
+    unreadCount, 
+    markAsRead, 
+    markAllAsRead, 
+    clearNotifications 
+  } = useNotificationStore();
+  
+  const [mockNotificationsList] = useState<Notification[]>(mockNotifications);
   const [stats, setStats] = useState<NotificationStats>(mockNotificationStats);
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
   const [isOpen, setIsOpen] = useState(false);
 
+  // Combine store notifications with mock notifications
+  const allNotifications = [
+    ...storeNotifications.map(n => ({
+      id: n.id,
+      title: n.title,
+      description: n.description,
+      type: n.type === 'success' ? 'customer' : 
+            n.type === 'warning' ? 'system' :
+            n.type === 'error' ? 'system' : 'campaign',
+      priority: n.type === 'error' ? 'critical' as const :
+               n.type === 'warning' ? 'high' as const : 'medium' as const,
+      category: n.type,
+      timestamp: n.timestamp.toISOString(),
+      isRead: n.read,
+      actionUrl: undefined,
+      metadata: {}
+    })),
+    ...mockNotificationsList
+  ];
+
   // Filter notifications based on selected filters
-  const filteredNotifications = notifications.filter(notification => {
+  const filteredNotifications = allNotifications.filter(notification => {
     const matchesFilter = selectedFilter === 'all' || 
       (selectedFilter === 'unread' && !notification.isRead) ||
       (selectedFilter === 'read' && notification.isRead) ||

@@ -21,9 +21,11 @@ import {
   Calendar
 } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { sampleCampaigns } from '@/data/sample-data';
 
 export default function MarketingPage() {
+  const router = useRouter();
   const [selectedView, setSelectedView] = useState<'overview' | 'campaigns' | 'performance'>('overview');
 
   // Calculate campaign statistics
@@ -35,11 +37,11 @@ export default function MarketingPage() {
   const totalConverted = sampleCampaigns.reduce((sum, c) => sum + c.totalConverted, 0);
 
   const handleCreateCampaign = () => {
-    
+    router.push('/campaigns');
   };
 
-  const handleImportCampaign = () => {
-    
+  const handleScheduleCampaign = () => {
+    router.push('/campaigns?mode=schedule');
   };
 
   const formatCurrency = (value: number) => {
@@ -64,11 +66,11 @@ export default function MarketingPage() {
         <BarChart3 className="h-3 w-3" />
         ROI: {averageROI.toFixed(1)}%
       </Badge>
-      <Button variant="outline" onClick={handleImportCampaign} className="gap-2">
+      <Button variant="outline" onClick={handleScheduleCampaign} className="gap-2 hover:bg-gray-50 transition-all duration-200 cursor-pointer">
         <Calendar className="h-4 w-4" />
         Schedule Campaign
       </Button>
-      <Button onClick={handleCreateCampaign} className="gap-2">
+      <Button onClick={handleCreateCampaign} className="gap-2 hover:bg-primary/90 transition-all duration-200 cursor-pointer">
         <Plus className="h-4 w-4" />
         Create Campaign
       </Button>

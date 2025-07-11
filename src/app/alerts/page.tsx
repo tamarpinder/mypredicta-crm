@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { AlertRules } from '@/components/alerts/alert-rules';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, Settings, Download, Plus } from 'lucide-react';
 
 export default function AlertsPage() {
+  const [triggerCreate, setTriggerCreate] = useState(false);
+
+  const handleCreateRule = () => {
+    setTriggerCreate(true);
+    setTimeout(() => setTriggerCreate(false), 100);
+  };
+
   const actions = (
     <div className="flex items-center gap-3">
       <Badge variant="outline" className="gap-1 text-white border-white/30">
@@ -21,7 +29,7 @@ export default function AlertsPage() {
         <Settings className="h-4 w-4" />
         Settings
       </Button>
-      <Button className="gap-2">
+      <Button onClick={handleCreateRule} className="gap-2">
         <Plus className="h-4 w-4" />
         Create Rule
       </Button>
@@ -34,7 +42,7 @@ export default function AlertsPage() {
       description="Configure automated alerts and notification rules for your CRM"
       actions={actions}
     >
-      <AlertRules />
+      <AlertRules triggerCreate={triggerCreate} />
     </DashboardLayout>
   );
 }

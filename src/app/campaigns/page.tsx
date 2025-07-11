@@ -67,13 +67,7 @@ export default function CampaignsPage() {
     }
   ]);
 
-  const handleCreateCampaign = (campaignData: {
-    name: string;
-    type: string;
-    schedule: { type: string };
-    targeting: { segment: string };
-    content: { subject: string; template: string };
-  }) => {
+  const handleCreateCampaign = (campaignData: Record<string, any>) => {
     const newCampaign = {
       id: Date.now().toString(),
       name: campaignData.name,
@@ -84,7 +78,7 @@ export default function CampaignsPage() {
       clicked: 0,
       converted: 0,
       revenue: 0,
-      cost: campaignData.budget.total,
+      cost: campaignData.budget?.total || 0,
       createdAt: new Date().toISOString().split('T')[0],
       scheduledAt: campaignData.schedule.type === 'scheduled' 
         ? `${campaignData.schedule.date}T${campaignData.schedule.time}:00Z`

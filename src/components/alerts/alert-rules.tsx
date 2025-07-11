@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -34,6 +34,7 @@ interface AlertRulesProps {
   onUpdateRule?: (ruleId: string, updates: Partial<AlertRule>) => void;
   onDeleteRule?: (ruleId: string) => void;
   onToggleRule?: (ruleId: string, isActive: boolean) => void;
+  triggerCreate?: boolean;
 }
 
 const conditionFields = [
@@ -70,7 +71,8 @@ export function AlertRules({
   onCreateRule, 
   onUpdateRule, 
   onDeleteRule, 
-  onToggleRule 
+  onToggleRule,
+  triggerCreate 
 }: AlertRulesProps) {
   const [rules, setRules] = useState<AlertRule[]>(mockAlertRules);
   const [isCreating, setIsCreating] = useState(false);
@@ -86,6 +88,12 @@ export function AlertRules({
     cooldownPeriod: 1,
     targetAudience: []
   });
+
+  useEffect(() => {
+    if (triggerCreate) {
+      setIsCreating(true);
+    }
+  }, [triggerCreate]);
 
   const handleToggleRule = (ruleId: string, isActive: boolean) => {
     setRules(prev => 

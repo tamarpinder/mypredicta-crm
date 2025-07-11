@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { 
   User, 
   Shield, 
@@ -66,6 +67,13 @@ export default function SettingsPage() {
   });
 
   const [activeTab, setActiveTab] = useState('general');
+  const [showAddUserDialog, setShowAddUserDialog] = useState(false);
+  const [newUser, setNewUser] = useState({
+    name: '',
+    email: '',
+    role: 'support',
+    status: 'active'
+  });
   
   // Mock user data
   const [users, setUsers] = useState([
@@ -122,6 +130,25 @@ export default function SettingsPage() {
       ...settings,
       // Reset logic here
     });
+  };
+
+  const handleAddUser = () => {
+    if (newUser.name && newUser.email) {
+      const userToAdd = {
+        id: (users.length + 1).toString(),
+        ...newUser,
+        lastLogin: new Date().toISOString(),
+        avatar: null
+      };
+      setUsers(prev => [...prev, userToAdd]);
+      setNewUser({
+        name: '',
+        email: '',
+        role: 'support',
+        status: 'active'
+      });
+      setShowAddUserDialog(false);
+    }
   };
 
   const actions = (
@@ -244,7 +271,10 @@ export default function SettingsPage() {
                   <Users className="h-5 w-5" />
                   User Management
                 </CardTitle>
-                <Button className="gap-2 bg-[var(--color-predicta-navy)] hover:bg-[var(--color-predicta-navy-dark)]">
+                <Button 
+                  onClick={() => setShowAddUserDialog(true)}
+                  className="gap-2 bg-[var(--color-predicta-navy)] hover:bg-[var(--color-predicta-navy-dark)]"
+                >
                   <Plus className="h-4 w-4" />
                   Add User
                 </Button>
@@ -628,6 +658,70 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Add User Dialog */}
+      <Dialog open={showAddUserDialog} onOpenChange={setShowAddUserDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New User</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="user-name">Full Name</Label>
+              <Input
+                id="user-name"
+                value={newUser.name}
+                onChange={(e) => setNewUser({...newUser, name: e.target.value})}
+                placeholder="Enter full name"
+              />
+            </div>
+            <div>
+              <Label htmlFor="user-email">Email Address</Label>
+              <Input
+                id="user-email"
+                type="email"
+                value={newUser.email}
+                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                placeholder="Enter email address"
+              />
+            </div>
+            <div>
+              <Label htmlFor="user-role">Role</Label>
+              <Select value={newUser.role} onValueChange={(value) => setNewUser({...newUser, role: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="manager">Manager</SelectItem>
+                  <SelectItem value="analyst">Analyst</SelectItem>
+                  <SelectItem value="support">Support</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="user-status">Status</Label>
+              <Select value={newUser.status} onValueChange={(value) => setNewUser({...newUser, status: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddUserDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddUser} disabled={!newUser.name || !newUser.email}>
+              Add User
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }

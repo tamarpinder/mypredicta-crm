@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { toastSuccess, toastWarning, toastError, toastInfo } from '@/hooks/use-toast';
 import { generateLotteryWinner } from '@/data/lottery-data';
 import { formatCurrency } from '@/utils/format';
+import { useNotificationStore } from '@/stores/notification-store';
 
 // Generate lottery winner notification
 const generateLotteryNotification = () => {
@@ -82,18 +83,33 @@ const NOTIFICATION_TYPES = [
 ];
 
 export function useLiveNotifications() {
+  const addNotification = useNotificationStore((state) => state.addNotification);
+  
   useEffect(() => {
     const showRandomNotification = () => {
       // 30% chance to show a lottery winner notification
       if (Math.random() < 0.3) {
         const lotteryNotification = generateLotteryNotification();
         toastSuccess(lotteryNotification.title, lotteryNotification.description);
+        addNotification({
+          title: lotteryNotification.title,
+          description: lotteryNotification.description,
+          type: 'success'
+        });
         return;
       }
       
       const typeData = NOTIFICATION_TYPES[Math.floor(Math.random() * NOTIFICATION_TYPES.length)];
       const notification = typeData.notifications[Math.floor(Math.random() * typeData.notifications.length)];
       
+      // Add to store
+      addNotification({
+        title: notification.title,
+        description: notification.description,
+        type: typeData.type as 'success' | 'warning' | 'error' | 'info'
+      });
+      
+      // Show toast
       switch (typeData.type) {
         case 'success':
           toastSuccess(notification.title, notification.description);
@@ -110,19 +126,19 @@ export function useLiveNotifications() {
       }
     };
 
-    // Show first notification after 3 seconds
-    const initialTimeout = setTimeout(showRandomNotification, 3000);
+    // Show first notification after 5 seconds
+    const initialTimeout = setTimeout(showRandomNotification, 5000);
     
-    // Then show notifications every 15-30 seconds
+    // Then show notifications every 30-60 seconds (less frequent for showcase)
     const interval = setInterval(() => {
       showRandomNotification();
-    }, Math.random() * 15000 + 15000); // 15-30 seconds
+    }, Math.random() * 30000 + 30000); // 30-60 seconds
 
     return () => {
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, []);
+  }, [addNotification]);
 }
 
 export function triggerTestNotification() {

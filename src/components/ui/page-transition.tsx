@@ -20,7 +20,7 @@ export function PageTransition({ children, className }: PageTransitionProps) {
     const timer = setTimeout(() => {
       setDisplayChildren(children);
       setIsLoading(false);
-    }, 150);
+    }, 50);
 
     return () => clearTimeout(timer);
   }, [pathname, children]);
@@ -65,7 +65,7 @@ export function TabTransition({
       setIsLoading(true);
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 200);
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [isActive]);
