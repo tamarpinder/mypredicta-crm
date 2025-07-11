@@ -17,7 +17,9 @@ import {
   LogOut,
   User,
   Bell,
-  Target
+  Target,
+  FlaskConical,
+  Route
 } from 'lucide-react';
 import { COMPANY_INFO } from '@/utils/constants';
 import Image from 'next/image';
@@ -45,6 +47,13 @@ const navigationItems = [
     badge: null
   },
   {
+    id: 'journey',
+    label: 'Customer Journey',
+    href: '/customers/journey',
+    icon: Route,
+    badge: null
+  },
+  {
     id: 'analytics',
     label: 'Analytics',
     href: '/analytics',
@@ -64,6 +73,13 @@ const navigationItems = [
     href: '/campaigns',
     icon: Target,
     badge: null
+  },
+  {
+    id: 'ab-testing',
+    label: 'A/B Testing',
+    href: '/ab-testing',
+    icon: FlaskConical,
+    badge: 3
   },
   {
     id: 'ai-insights',

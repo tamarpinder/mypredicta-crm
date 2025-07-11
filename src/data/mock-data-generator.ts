@@ -139,6 +139,7 @@ export const generateCustomers = (count: number): Customer[] => {
       city: getRandomChoice(cities),
       registrationDate,
       lastLoginDate,
+      lastActivity: lastLoginDate,
       isVip,
       vipLevel,
       status: getWeightedChoice(['active', 'inactive', 'suspended', 'banned'], [75, 20, 4, 1]),

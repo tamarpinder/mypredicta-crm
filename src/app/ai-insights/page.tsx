@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { sampleAIInsights, sampleCustomers } from '@/data/sample-data';
+import { formatCurrency } from '@/utils/format';
 
 export default function AIInsightsPage() {
   const [selectedView, setSelectedView] = useState<'overview' | 'churn' | 'ltv' | 'recommendations'>('overview');
@@ -46,14 +47,6 @@ export default function AIInsightsPage() {
     console.log('Configuring AI settings...');
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(value);
-  };
 
   const actions = (
     <div className="flex items-center gap-3">

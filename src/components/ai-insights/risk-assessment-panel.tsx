@@ -18,6 +18,7 @@ import {
   Target
 } from 'lucide-react';
 import { Customer } from '@/types';
+import { formatCurrency } from '@/utils/format';
 
 interface RiskAssessmentPanelProps {
   customers: Customer[];
@@ -90,14 +91,6 @@ export function RiskAssessmentPanel({ customers, compact = false }: RiskAssessme
     return <CheckCircle className="h-4 w-4" />;
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(value);
-  };
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('en-US', {

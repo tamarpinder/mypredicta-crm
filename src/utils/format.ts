@@ -40,3 +40,11 @@ export function formatNumberWithCommas(value: number): string {
 export function formatPercentage(value: number, decimals: number = 1): string {
   return value.toFixed(decimals) + '%';
 }
+
+export function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}

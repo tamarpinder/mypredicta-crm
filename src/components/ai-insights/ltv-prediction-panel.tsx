@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { AIInsights } from '@/types';
 import { sampleCustomers } from '@/data/sample-data';
+import { formatCurrency } from '@/utils/format';
 
 interface LTVPredictionPanelProps {
   predictions: AIInsights['lifetimeValuePrediction'];
@@ -49,14 +50,6 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
     };
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(value);
-  };
 
   if (compact) {
     return (

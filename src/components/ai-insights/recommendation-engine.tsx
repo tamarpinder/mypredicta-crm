@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { AIInsights } from '@/types';
 import { sampleCustomers } from '@/data/sample-data';
+import { formatCurrency } from '@/utils/format';
 
 interface RecommendationEngineProps {
   recommendations: AIInsights['gameRecommendations'];
@@ -26,9 +27,10 @@ interface RecommendationEngineProps {
 }
 
 export function RecommendationEngine({ recommendations, compact = false }: RecommendationEngineProps) {
-  const gameRecommendations = recommendations.filter(r => r.type === 'game');
-  const offerRecommendations = recommendations.filter(r => r.type === 'offer');
-  const experienceRecommendations = recommendations.filter(r => r.type === 'experience');
+  // For now, treat all recommendations as game recommendations since that's what we have in the data
+  const gameRecommendations = recommendations;
+  const offerRecommendations: any[] = [];
+  const experienceRecommendations: any[] = [];
 
 
   const getRecommendationColor = (type: string) => {
@@ -54,14 +56,6 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
     };
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(value);
-  };
 
   if (compact) {
     return (
@@ -105,16 +99,16 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {recommendation.recommendedItem}
+                          {recommendation.recommendedGames.join(', ')}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge className={getRecommendationColor(recommendation.type)}>
-                        {recommendation.type}
+                      <Badge className={getRecommendationColor('game')}>
+                        Games
                       </Badge>
                       <div className="text-xs text-muted-foreground">
-                        {(recommendation.confidence * 100).toFixed(0)}% match
+                        {recommendation.expectedEngagement}% match
                       </div>
                     </div>
                   </div>
@@ -222,20 +216,20 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                   
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-sm mb-1">
-                      <span>Confidence Score</span>
-                      <span>{(recommendation.confidence * 100).toFixed(1)}%</span>
+                      <span>Engagement Score</span>
+                      <span>{recommendation.expectedEngagement}%</span>
                     </div>
-                    <Progress value={recommendation.confidence * 100} className="h-2" />
+                    <Progress value={recommendation.expectedEngagement} className="h-2" />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <div className="text-sm text-muted-foreground">Recommended Game</div>
-                      <div className="font-medium">{recommendation.recommendedItem}</div>
+                      <div className="text-sm text-muted-foreground">Recommended Games</div>
+                      <div className="font-medium">{recommendation.recommendedGames.join(', ')}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Expected Revenue</div>
-                      <div className="font-medium text-green-600">{formatCurrency(recommendation.expectedValue)}</div>
+                      <div className="text-sm text-muted-foreground">Expected Engagement</div>
+                      <div className="font-medium text-green-600">{recommendation.expectedEngagement}%</div>
                     </div>
                   </div>
                   
@@ -267,7 +261,7 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
         </CardContent>
       </Card>
 
-      {/* Offer Recommendations */}
+      {/* Coming Soon: Offer Recommendations */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -276,80 +270,12 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {offerRecommendations.map((recommendation, index) => {
-              const customer = getCustomerInfo(recommendation.customerId);
-              return (
-                <div key={index} className="border rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarFallback>
-                          {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">
-                          {customer.firstName} {customer.lastName}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          LTV: {formatCurrency(customer.lifetimeValue)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <Badge className={getRecommendationColor(recommendation.type)}>
-                        {recommendation.type}
-                      </Badge>
-                      <div className="text-sm text-muted-foreground mt-1">
-                        {(recommendation.confidence * 100).toFixed(0)}% match
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span>Offer Appeal Score</span>
-                      <span>{(recommendation.confidence * 100).toFixed(1)}%</span>
-                    </div>
-                    <Progress value={recommendation.confidence * 100} className="h-2" />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-3">
-                    <div>
-                      <div className="text-sm text-muted-foreground">Recommended Offer</div>
-                      <div className="font-medium">{recommendation.recommendedItem}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">Expected Revenue</div>
-                      <div className="font-medium text-green-600">{formatCurrency(recommendation.expectedValue)}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <div className="text-sm text-muted-foreground mb-2">Offer Details:</div>
-                    <div className="text-sm bg-green-50 p-2 rounded-lg">
-                      {recommendation.reason}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" className="gap-1">
-                      <Zap className="h-4 w-4" />
-                      Send Offer
-                    </Button>
-                    <Button size="sm" variant="outline" className="gap-1">
-                      <Target className="h-4 w-4" />
-                      Create Campaign
-                    </Button>
-                    <Button size="sm" className="gap-1">
-                      <User className="h-4 w-4" />
-                      View Profile
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="text-center py-8">
+            <Coins className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
+            <p className="text-muted-foreground">
+              Personalized promotional offers based on customer behavior and preferences.
+            </p>
           </div>
         </CardContent>
       </Card>

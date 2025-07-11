@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { AIInsights } from '@/types';
 import { sampleCustomers } from '@/data/sample-data';
+import { formatCurrency } from '@/utils/format';
 
 interface ChurnPredictionPanelProps {
   predictions: AIInsights['churnPrediction'];
@@ -50,14 +51,6 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
     };
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1
-    }).format(value);
-  };
 
   if (compact) {
     return (

@@ -128,3 +128,121 @@ export interface NavigationItem {
   badge?: number;
   children?: NavigationItem[];
 }
+
+export interface JourneyStage {
+  id: string;
+  name: string;
+  description: string;
+  type: 'awareness' | 'acquisition' | 'activation' | 'retention' | 'revenue' | 'referral';
+  order: number;
+  icon: string;
+  color: string;
+  metrics: {
+    totalCustomers: number;
+    conversionRate: number;
+    averageTime: number;
+    dropoffRate: number;
+  };
+}
+
+export interface JourneyEvent {
+  id: string;
+  customerId: string;
+  stageId: string;
+  type: 'email_sent' | 'email_opened' | 'email_clicked' | 'sms_sent' | 'sms_clicked' | 'push_sent' | 'push_opened' | 'registration' | 'first_deposit' | 'first_bet' | 'game_played' | 'withdrawal' | 'support_contact' | 'churn' | 'reactivation';
+  channel: 'email' | 'sms' | 'push' | 'web' | 'app' | 'phone' | 'chat';
+  timestamp: string;
+  metadata: {
+    campaignId?: string;
+    gameId?: string;
+    amount?: number;
+    duration?: number;
+    source?: string;
+    medium?: string;
+  };
+}
+
+export interface JourneyFlow {
+  id: string;
+  name: string;
+  description: string;
+  stages: JourneyStage[];
+  events: JourneyEvent[];
+  targetSegment: string[];
+  isActive: boolean;
+  createdDate: string;
+  lastModified: string;
+  metrics: {
+    totalCustomers: number;
+    completionRate: number;
+    averageJourneyTime: number;
+    totalRevenue: number;
+    conversionsByStage: Record<string, number>;
+  };
+}
+
+export interface CustomerJourney {
+  customerId: string;
+  flowId: string;
+  currentStage: string;
+  startDate: string;
+  completedStages: string[];
+  events: JourneyEvent[];
+  status: 'active' | 'completed' | 'abandoned' | 'paused';
+  progressPercentage: number;
+  timeInCurrentStage: number;
+  predictedNextAction: string;
+  riskScore: number;
+}
+
+export interface JourneyAnalytics {
+  flowId: string;
+  dateRange: {
+    startDate: string;
+    endDate: string;
+  };
+  overview: {
+    totalCustomers: number;
+    activeJourneys: number;
+    completedJourneys: number;
+    abandonedJourneys: number;
+    averageCompletionTime: number;
+    conversionRate: number;
+  };
+  stageAnalytics: {
+    stageId: string;
+    stageName: string;
+    entrances: number;
+    exits: number;
+    completions: number;
+    averageTime: number;
+    conversionRate: number;
+    dropoffRate: number;
+  }[];
+  channelPerformance: {
+    channel: string;
+    interactions: number;
+    conversionRate: number;
+    engagementRate: number;
+    revenue: number;
+  }[];
+  cohortAnalysis: {
+    cohort: string;
+    customers: number;
+    completionRate: number;
+    averageTime: number;
+    revenue: number;
+  }[];
+}
+
+export interface JourneyTemplate {
+  id: string;
+  name: string;
+  description: string;
+  category: 'onboarding' | 'retention' | 'winback' | 'vip' | 'cross-sell' | 'upsell';
+  stages: Omit<JourneyStage, 'metrics'>[];
+  defaultEvents: Omit<JourneyEvent, 'id' | 'customerId' | 'timestamp'>[];
+  estimatedDuration: number;
+  targetSegments: string[];
+  expectedConversionRate: number;
+}
