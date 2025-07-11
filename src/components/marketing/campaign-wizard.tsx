@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,15 +13,9 @@ import { Progress } from '@/components/ui/progress';
 import { 
   ChevronLeft, 
   ChevronRight, 
-  Users, 
   Target, 
   Mail, 
-  MessageSquare,
-  Bell,
-  Globe,
   Calendar,
-  DollarSign,
-  TrendingUp,
   Eye,
   Send,
   Save,
@@ -31,17 +25,19 @@ import {
 interface CampaignWizardProps {
   onComplete: (campaignData: any) => void;
   onCancel: () => void;
+  initialType?: string;
+  isScheduleMode?: boolean;
 }
 
 type Step = 'template' | 'targeting' | 'content' | 'schedule' | 'review';
 
-export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
-  const [currentStep, setCurrentStep] = useState<Step>('template');
+export function CampaignWizard({ onComplete, onCancel, initialType, isScheduleMode = false }: CampaignWizardProps) {
+  const [currentStep, setCurrentStep] = useState<Step>(initialType ? 'targeting' : 'template');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [campaignData, setCampaignData] = useState({
     name: '',
-    type: '',
-    template: '',
+    type: initialType ? getTemplateType(initialType) : '',
+    template: initialType || '',
     targeting: {
       segments: [] as string[],
       countries: [] as string[],
@@ -66,6 +62,26 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
       daily: 0
     }
   });
+
+  // Helper function to get template type
+  function getTemplateType(templateId: string): string {
+    const templateMap: Record<string, string> = {
+      'welcome': 'email',
+      'retention': 'email', 
+      'vip-upgrade': 'email',
+      'deposit-bonus': 'sms',
+      'game-recommendation': 'push',
+      'custom': 'email'
+    };
+    return templateMap[templateId] || 'email';
+  }
+
+  // Set schedule type based on mode
+  React.useEffect(() => {
+    if (isScheduleMode) {
+      updateCampaignData('schedule', { type: 'scheduled' });
+    }
+  }, [isScheduleMode]);
 
   const steps = [
     { id: 'template', name: 'Template', icon: Wand2 },
@@ -602,26 +618,20 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Create Campaign</h2>
-          <Button variant="outline" onClick={onCancel}>
-            Cancel
-          </Button>
-        </div>
+    <div className="w-full">
+      <div className="mb-6">
         
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-2 mb-4 overflow-x-auto">
           {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center gap-2">
+            <div key={step.id} className="flex items-center gap-2 flex-shrink-0">
               <div className={`p-2 rounded-full ${index <= stepIndex ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                <step.icon className="h-4 w-4" />
+                <step.icon className="h-3 w-3" />
               </div>
-              <span className={`text-sm ${index <= stepIndex ? 'text-foreground' : 'text-muted-foreground'}`}>
+              <span className={`text-xs ${index <= stepIndex ? 'text-foreground' : 'text-muted-foreground'} hidden sm:block`}>
                 {step.name}
               </span>
               {index < steps.length - 1 && (
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                <ChevronRight className="h-3 w-3 text-muted-foreground" />
               )}
             </div>
           ))}
@@ -630,25 +640,24 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
         <Progress value={progress} className="h-2" />
       </div>
 
-      <Card>
-        <CardContent className="p-6">
-          {renderCurrentStep()}
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        {renderCurrentStep()}
+      </div>
 
-      <div className="flex justify-between mt-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between mt-6 gap-3">
         <Button
           variant="outline"
           onClick={handlePrevious}
           disabled={stepIndex === 0}
-          className="gap-2"
+          className="gap-2 order-2 sm:order-1"
+          size="sm"
         >
           <ChevronLeft className="h-4 w-4" />
           Previous
         </Button>
         
-        <div className="flex gap-2">
-          <Button variant="outline" className="gap-2">
+        <div className="flex gap-2 order-1 sm:order-2">
+          <Button variant="outline" className="gap-2 flex-1 sm:flex-none" size="sm">
             <Save className="h-4 w-4" />
             Save Draft
           </Button>
@@ -656,15 +665,15 @@ export function CampaignWizard({ onComplete, onCancel }: CampaignWizardProps) {
           {stepIndex === steps.length - 1 ? (
             <Button 
               onClick={handleComplete} 
-              loading={isSubmitting}
               disabled={isSubmitting}
-              className="gap-2"
+              className="gap-2 flex-1 sm:flex-none"
+              size="sm"
             >
               <Send className="h-4 w-4" />
               {isSubmitting ? 'Launching...' : 'Launch Campaign'}
             </Button>
           ) : (
-            <Button onClick={handleNext} className="gap-2">
+            <Button onClick={handleNext} className="gap-2 flex-1 sm:flex-none" size="sm">
               Next
               <ChevronRight className="h-4 w-4" />
             </Button>

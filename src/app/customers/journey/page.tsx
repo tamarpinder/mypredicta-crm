@@ -70,7 +70,7 @@ export default function CustomerJourneyPage() {
         const flow = journeyFlows.find(f => f.id === value);
         if (flow) setSelectedFlow(flow);
       }}>
-        <SelectTrigger className="w-48">
+        <SelectTrigger className="w-48 text-white border-white/30">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
