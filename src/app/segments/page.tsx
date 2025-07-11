@@ -80,7 +80,12 @@ export default function SegmentsPage() {
     }
   ]);
 
-  const handleCreateSegment = (segmentData: any) => {
+  const handleCreateSegment = (segmentData: {
+    name: string;
+    description: string;
+    criteria: Record<string, unknown>;
+    customerCount: number;
+  }) => {
     const newSegment = {
       id: Date.now().toString(),
       ...segmentData,

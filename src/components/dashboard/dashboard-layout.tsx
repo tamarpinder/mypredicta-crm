@@ -34,16 +34,16 @@ export function DashboardLayout({
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           {(title || description || actions) && (
-            <header className="bg-card border-b border-border px-6 py-4">
+            <header className="bg-gradient-to-r from-[var(--color-predicta-navy)] to-[var(--color-predicta-navy-dark)] border-b border-[var(--color-predicta-gold)] px-6 py-4 shadow-lg">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   {title && (
-                    <h1 className="text-2xl font-bold text-foreground">
+                    <h1 className="text-2xl font-bold text-white">
                       {title}
                     </h1>
                   )}
                   {description && (
-                    <p className="text-muted-foreground mt-1">
+                    <p className="text-white/80 mt-1">
                       {description}
                     </p>
                   )}

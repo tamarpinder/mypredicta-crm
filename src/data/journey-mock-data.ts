@@ -317,8 +317,8 @@ export const generateJourneyEvents = (customerId: string, flowId: string, count:
       id: `event_${customerId}_${i}`,
       customerId,
       stageId,
-      type: eventType as any,
-      channel: channel as any,
+      type: eventType as JourneyEvent['type'],
+      channel: channel as JourneyEvent['channel'],
       timestamp: getRandomDate(thirtyDaysAgo, now),
       metadata: {
         campaignId: Math.random() < 0.7 ? `campaign_${getRandomBetween(1, 10)}` : undefined,

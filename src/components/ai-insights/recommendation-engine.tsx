@@ -8,7 +8,6 @@ import { Progress } from '@/components/ui/progress';
 import { 
   Star, 
   Gamepad2, 
-  Target,
   User,
   Settings,
   Zap,
@@ -19,7 +18,7 @@ import {
 } from 'lucide-react';
 import { AIInsights } from '@/types';
 import { sampleCustomers } from '@/data/sample-data';
-import { formatCurrency } from '@/utils/format';
+import { formatNumber } from '@/utils/format';
 
 interface RecommendationEngineProps {
   recommendations: AIInsights['gameRecommendations'];

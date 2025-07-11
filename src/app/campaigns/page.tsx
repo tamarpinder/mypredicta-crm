@@ -8,8 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, 
-  Calendar, 
-  Users, 
   Target, 
   TrendingUp,
   Mail,
@@ -17,7 +15,6 @@ import {
   Bell,
   Eye,
   Edit,
-  Trash2,
   Play,
   Pause,
   Copy
@@ -70,7 +67,13 @@ export default function CampaignsPage() {
     }
   ]);
 
-  const handleCreateCampaign = (campaignData: any) => {
+  const handleCreateCampaign = (campaignData: {
+    name: string;
+    type: string;
+    schedule: { type: string };
+    targeting: { segment: string };
+    content: { subject: string; template: string };
+  }) => {
     const newCampaign = {
       id: Date.now().toString(),
       name: campaignData.name,

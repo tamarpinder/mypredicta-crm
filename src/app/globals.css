@@ -42,14 +42,22 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   
-  /* Predicta Brand Colors */
-  --color-predicta-primary: #1E40AF;
-  --color-predicta-secondary: #059669;
-  --color-predicta-accent: #DC2626;
-  --color-predicta-warning: #F59E0B;
-  --color-predicta-info: #0EA5E9;
-  --color-predicta-success: #10B981;
+  /* Predicta Brand Colors - Based on Logo Analysis */
+  --color-predicta-navy: #1A2B4C;
+  --color-predicta-navy-dark: #0F1B2F;
+  --color-predicta-gold: #F59E0B;
+  --color-predicta-gold-light: #FCD34D;
+  --color-predicta-cyan: #0EA5E9;
+  --color-predicta-cyan-light: #38BDF8;
+  --color-predicta-white: #FFFFFF;
   --color-predicta-neutral: #6B7280;
+  
+  /* Brand Gradients */
+  --gradient-header: linear-gradient(135deg, #1A2B4C 0%, #0F1B2F 100%);
+  --gradient-splash: linear-gradient(135deg, #1A2B4C 0%, #0F1B2F 100%);
+  --gradient-card: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  --gradient-gold: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+  --gradient-cyan: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%);
   
   /* Gaming-specific colors */
   --color-sports: #2563EB;
@@ -74,10 +82,10 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.376 0.166 252.95);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: var(--color-predicta-navy);
+  --primary-foreground: var(--color-predicta-white);
+  --secondary: var(--color-predicta-gold);
+  --secondary-foreground: var(--color-predicta-navy);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -142,4 +150,49 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom Animations for Splash Screen */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.8s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.6s ease-out;
+  animation-fill-mode: both;
 }

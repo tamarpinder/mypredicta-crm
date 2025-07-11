@@ -36,7 +36,7 @@ import { formatNumber, formatPercentage, formatDate } from '@/utils/format';
 
 export default function CustomerJourneyPage() {
   const [selectedFlow, setSelectedFlow] = useState<JourneyFlow>(journeyFlows[0]);
-  const [selectedStage, setSelectedStage] = useState<JourneyStage | null>(null);
+  const [, setSelectedStage] = useState<JourneyStage | null>(null);
   const [activeTab, setActiveTab] = useState('visualizer');
   const [isBuilding, setIsBuilding] = useState(false);
 
@@ -51,12 +51,11 @@ export default function CustomerJourneyPage() {
   };
 
   const handleSaveJourney = (journey: JourneyFlow) => {
-    
+    setSelectedFlow(journey);
     setIsBuilding(false);
   };
 
   const handlePreviewJourney = (journey: JourneyFlow) => {
-    
     setSelectedFlow(journey);
     setActiveTab('visualizer');
   };

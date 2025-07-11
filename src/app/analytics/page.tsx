@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PremiumCard, PremiumCardContent, PremiumCardHeader, PremiumCardTitle } from '@/components/ui/premium-card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -32,7 +33,8 @@ import {
   Gamepad2,
   AlertTriangle,
   Activity,
-  MapPin
+  MapPin,
+  Target
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/utils/format';
 
@@ -46,17 +48,17 @@ const revenueData = [
 ];
 
 const gameTypeData = [
-  { name: 'Sports Betting', value: 18500000, percentage: 35.2, color: '#0EA5E9' },
-  { name: 'Casino Games', value: 15200000, percentage: 28.9, color: '#8B5CF6' },
-  { name: 'Live Games', value: 12800000, percentage: 24.3, color: '#EF4444' },
-  { name: 'Lottery', value: 6100000, percentage: 11.6, color: '#F59E0B' }
+  { name: 'Sports Betting', value: 18500000, percentage: 35.2, color: 'var(--color-sports)' },
+  { name: 'Casino Games', value: 15200000, percentage: 28.9, color: 'var(--color-casino)' },
+  { name: 'Live Games', value: 12800000, percentage: 24.3, color: 'var(--color-live-games)' },
+  { name: 'Lottery', value: 6100000, percentage: 11.6, color: 'var(--color-lottery)' }
 ];
 
 const customerSegmentData = [
-  { segment: 'High Value', customers: 1250, revenue: 22500000, avgLTV: 18000, color: '#10B981' },
-  { segment: 'Regular', customers: 8900, revenue: 18200000, avgLTV: 2045, color: '#3B82F6' },
-  { segment: 'At Risk', customers: 2100, revenue: 8900000, avgLTV: 4238, color: '#F59E0B' },
-  { segment: 'Churned', customers: 890, revenue: 3100000, avgLTV: 3483, color: '#EF4444' }
+  { segment: 'High Value', customers: 1250, revenue: 22500000, avgLTV: 18000, color: 'var(--color-high-value)' },
+  { segment: 'Regular', customers: 8900, revenue: 18200000, avgLTV: 2045, color: 'var(--color-predicta-cyan)' },
+  { segment: 'At Risk', customers: 2100, revenue: 8900000, avgLTV: 4238, color: 'var(--color-at-risk)' },
+  { segment: 'Churned', customers: 890, revenue: 3100000, avgLTV: 3483, color: 'var(--color-predicta-neutral)' }
 ];
 
 const geographicData = [
@@ -143,93 +145,97 @@ export default function AnalyticsPage() {
     >
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
+        <PremiumCard variant="stats" className="hover:scale-105 transition-transform duration-300">
+          <PremiumCardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
                   Total Revenue
                 </p>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
                   {formatCurrency(52600000)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-xs text-green-600">+12.3%</span>
+                  <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
+                  <span className="text-xs text-[var(--color-profit)]">+12.3%</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-green-100">
-                <DollarSign className="h-6 w-6 text-green-600" />
+              <div className="p-3 rounded-lg bg-[var(--color-profit)]/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-predicta-gold)]/10 to-transparent"></div>
+                <DollarSign className="h-6 w-6 text-[var(--color-profit)] relative z-10" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PremiumCardContent>
+        </PremiumCard>
 
-        <Card>
-          <CardContent className="p-6">
+        <PremiumCard variant="stats" className="hover:scale-105 transition-transform duration-300">
+          <PremiumCardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
                   Active Customers
                 </p>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
                   {formatNumber(25847)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-xs text-green-600">+8.7%</span>
+                  <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
+                  <span className="text-xs text-[var(--color-profit)]">+8.7%</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-blue-100">
-                <Users className="h-6 w-6 text-blue-600" />
+              <div className="p-3 rounded-lg bg-[var(--color-predicta-cyan)]/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-predicta-gold)]/10 to-transparent"></div>
+                <Users className="h-6 w-6 text-[var(--color-predicta-cyan)] relative z-10" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PremiumCardContent>
+        </PremiumCard>
 
-        <Card>
-          <CardContent className="p-6">
+        <PremiumCard variant="stats" className="hover:scale-105 transition-transform duration-300">
+          <PremiumCardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
                   Average LTV
                 </p>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
                   {formatCurrency(2847)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-xs text-green-600">+5.2%</span>
+                  <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
+                  <span className="text-xs text-[var(--color-profit)]">+5.2%</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-purple-100">
-                <Target className="h-6 w-6 text-purple-600" />
+              <div className="p-3 rounded-lg bg-[var(--color-vip)]/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-predicta-gold)]/10 to-transparent"></div>
+                <Target className="h-6 w-6 text-[var(--color-vip)] relative z-10" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PremiumCardContent>
+        </PremiumCard>
 
-        <Card>
-          <CardContent className="p-6">
+        <PremiumCard variant="stats" className="hover:scale-105 transition-transform duration-300">
+          <PremiumCardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
                   Churn Rate
                 </p>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
                   3.6%
                 </p>
                 <div className="flex items-center gap-1 mt-1">
-                  <TrendingDown className="h-3 w-3 text-green-600" />
-                  <span className="text-xs text-green-600">-1.2%</span>
+                  <TrendingDown className="h-3 w-3 text-[var(--color-profit)]" />
+                  <span className="text-xs text-[var(--color-profit)]">-1.2%</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-red-100">
-                <AlertTriangle className="h-6 w-6 text-red-600" />
+              <div className="p-3 rounded-lg bg-[var(--color-at-risk)]/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-predicta-gold)]/10 to-transparent"></div>
+                <AlertTriangle className="h-6 w-6 text-[var(--color-at-risk)] relative z-10" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PremiumCardContent>
+        </PremiumCard>
       </div>
 
       {/* Revenue Trends */}
@@ -248,8 +254,8 @@ export default function AnalyticsPage() {
               <YAxis />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              <Bar dataKey="revenue" fill="#3B82F6" name="Revenue" />
-              <Line type="monotone" dataKey="newCustomers" stroke="#10B981" name="New Customers" strokeWidth={2} />
+              <Bar dataKey="revenue" fill="var(--color-predicta-navy)" name="Revenue" />
+              <Line type="monotone" dataKey="newCustomers" stroke="var(--color-predicta-gold)" name="New Customers" strokeWidth={2} />
             </ComposedChart>
           </ResponsiveContainer>
         </CardContent>
@@ -363,7 +369,7 @@ export default function AnalyticsPage() {
                   <XAxis type="number" />
                   <YAxis dataKey="country" type="category" width={80} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="revenue" fill="#3B82F6" />
+                  <Bar dataKey="revenue" fill="var(--color-predicta-navy)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -387,9 +393,9 @@ export default function AnalyticsPage() {
               <YAxis />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              <Bar dataKey="newCustomers" fill="#10B981" name="New Customers" />
-              <Area dataKey="retained" fill="#3B82F6" name="Retained Customers" />
-              <Line type="monotone" dataKey="churnRate" stroke="#EF4444" name="Churn Rate %" strokeWidth={2} />
+              <Bar dataKey="newCustomers" fill="var(--color-predicta-gold)" name="New Customers" />
+              <Area dataKey="retained" fill="var(--color-predicta-cyan)" name="Retained Customers" />
+              <Line type="monotone" dataKey="churnRate" stroke="var(--color-at-risk)" name="Churn Rate %" strokeWidth={2} />
             </ComposedChart>
           </ResponsiveContainer>
         </CardContent>

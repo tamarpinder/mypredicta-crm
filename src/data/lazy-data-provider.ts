@@ -5,8 +5,8 @@ import { generateCustomers, generateTransactions, generateCampaigns, generateGam
 
 // Lazy data provider with caching
 class LazyDataProvider {
-  private cache = new Map<string, any>();
-  private generating = new Map<string, Promise<any>>();
+  private cache = new Map<string, unknown>();
+  private generating = new Map<string, Promise<unknown>>();
 
   async getCustomers(count: number = 1000): Promise<Customer[]> {
     const key = `customers_${count}`;
