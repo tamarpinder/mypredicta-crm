@@ -96,28 +96,91 @@ export interface DashboardMetrics {
 export interface AIInsights {
   churnPrediction: {
     customerId: string;
+    customerName?: string;
+    location?: string;
     riskScore: number;
     factors: string[];
     recommendation: string;
+    estimatedLoss?: number;
+    daysSinceLastActivity?: number;
   }[];
   lifetimeValuePrediction: {
     customerId: string;
+    customerName?: string;
+    location?: string;
     predictedValue: number;
     confidence: number;
     timeframe: string;
+    currentValue?: number;
+    growthPotential?: number;
   }[];
   gameRecommendations: {
     customerId: string;
-    recommendedGames: string[];
+    customerName?: string;
+    location?: string;
+    recommendedGame?: string;
+    recommendedGames?: string[];
     reason: string;
-    expectedEngagement: number;
+    expectedEngagement: string | number;
+    confidence?: number;
+    potentialRevenue?: number;
   }[];
-  marketingInsights: {
+  marketingInsights?: {
     bestTimeToSend: string;
     optimalFrequency: string;
     highPerformingSegments: string[];
     contentPreferences: Record<string, number>;
   };
+  
+  // Extended insights
+  highRiskCustomers?: {
+    customerId: string;
+    customerName: string;
+    location: string;
+    riskScore: number;
+    factors: string[];
+    recommendation: string;
+    estimatedLoss: number;
+    daysSinceLastActivity: number;
+  }[];
+  behavioralInsights?: {
+    peakPlayingHours: { hour: string; percentage: number; location: string; }[];
+    seasonalTrends: { season: string; impact: string; description: string; }[];
+    preferredPayment: { method: string; percentage: number; trend: string; }[];
+  };
+  retentionPredictions?: {
+    customerId: string;
+    customerName: string;
+    location: string;
+    retentionProbability: number;
+    riskLevel: string;
+    actionRequired: boolean;
+    suggestedAction: string;
+  }[];
+  crossSellOpportunities?: {
+    customerId: string;
+    customerName: string;
+    location: string;
+    currentProducts: string[];
+    recommendedProducts: string[];
+    conversionProbability: number;
+    potentialRevenue: number;
+  }[];
+  vipUpgradeCandidates?: {
+    customerId: string;
+    customerName: string;
+    location: string;
+    currentTier: string;
+    targetTier: string;
+    upgradeScore: number;
+    monthsToUpgrade: number;
+  }[];
+  
+  // Summary statistics
+  totalHighRiskCustomers?: number;
+  totalPredictiveModels?: number;
+  aiAccuracy?: number;
+  lastUpdated?: string;
 }
 
 export interface NavigationItem {

@@ -1,20 +1,7 @@
-// Mock data for charts and visualizations
-export const revenueData = [
-  { date: '2024-01-01', revenue: 145000, deposits: 180000, withdrawals: 95000, bets: 220000 },
-  { date: '2024-01-02', revenue: 152000, deposits: 190000, withdrawals: 88000, bets: 235000 },
-  { date: '2024-01-03', revenue: 138000, deposits: 175000, withdrawals: 102000, bets: 210000 },
-  { date: '2024-01-04', revenue: 165000, deposits: 200000, withdrawals: 110000, bets: 250000 },
-  { date: '2024-01-05', revenue: 158000, deposits: 195000, withdrawals: 105000, bets: 240000 },
-  { date: '2024-01-06', revenue: 172000, deposits: 210000, withdrawals: 98000, bets: 260000 },
-  { date: '2024-01-07', revenue: 145000, deposits: 185000, withdrawals: 115000, bets: 225000 },
-  { date: '2024-01-08', revenue: 168000, deposits: 205000, withdrawals: 92000, bets: 255000 },
-  { date: '2024-01-09', revenue: 155000, deposits: 192000, withdrawals: 108000, bets: 238000 },
-  { date: '2024-01-10', revenue: 162000, deposits: 198000, withdrawals: 96000, bets: 245000 },
-  { date: '2024-01-11', revenue: 148000, deposits: 188000, withdrawals: 112000, bets: 230000 },
-  { date: '2024-01-12', revenue: 175000, deposits: 215000, withdrawals: 89000, bets: 265000 },
-  { date: '2024-01-13', revenue: 169000, deposits: 208000, withdrawals: 104000, bets: 258000 },
-  { date: '2024-01-14', revenue: 156000, deposits: 193000, withdrawals: 99000, bets: 242000 },
-];
+import { generateRevenueData, generateMonthlyRevenueData } from '@/utils/revenue-generator';
+
+// Dynamic revenue data that changes on each import
+export const revenueData = generateRevenueData(14);
 
 export const customerActivityData = [
   { period: 'Jan 1-7', active: 18500, new: 1200, churned: 450, returning: 850 },

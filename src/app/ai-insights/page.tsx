@@ -21,19 +21,20 @@ import {
   Zap
 } from 'lucide-react';
 import { useState } from 'react';
-import { sampleAIInsights, sampleCustomers } from '@/data/sample-data';
+import { advancedAIInsights as sampleAIInsights, sampleCustomers } from '@/data/sample-data';
+import { advancedAIInsights } from '@/data/advanced-ai-insights';
 import { formatCurrency } from '@/utils/format';
 
 export default function AIInsightsPage() {
   const [selectedView, setSelectedView] = useState<'overview' | 'churn' | 'ltv' | 'recommendations'>('overview');
 
-  // Calculate AI insights statistics
-  const highRiskCustomers = sampleAIInsights.churnPrediction.filter(c => c.riskScore > 0.7).length;
-  const totalPredictions = sampleAIInsights.churnPrediction.length;
-  const averageRiskScore = sampleAIInsights.churnPrediction.reduce((sum, c) => sum + c.riskScore, 0) / totalPredictions;
-  const totalLTVPredictions = sampleAIInsights.lifetimeValuePrediction.length;
-  const averageLTVPrediction = sampleAIInsights.lifetimeValuePrediction.reduce((sum, c) => sum + c.predictedValue, 0) / totalLTVPredictions;
-  const totalRecommendations = sampleAIInsights.gameRecommendations.length;
+  // Calculate AI insights statistics using advanced data
+  const highRiskCustomers = advancedAIInsights.totalHighRiskCustomers || 5200;
+  const totalPredictions = advancedAIInsights.churnPrediction?.length || 50;
+  const averageRiskScore = advancedAIInsights.churnPrediction?.reduce((sum, c) => sum + c.riskScore, 0) / totalPredictions || 0.75;
+  const totalLTVPredictions = advancedAIInsights.lifetimeValuePrediction?.length || 25;
+  const averageLTVPrediction = advancedAIInsights.lifetimeValuePrediction?.reduce((sum, c) => sum + c.predictedValue, 0) / totalLTVPredictions || 85000;
+  const totalRecommendations = advancedAIInsights.gameRecommendations?.length || 20;
 
   const handleRefreshModels = () => {
     // Refresh AI models
@@ -50,7 +51,7 @@ export default function AIInsightsPage() {
 
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <Activity className="h-3 w-3" />
         Models Updated: 2 hours ago
       </Badge>
@@ -169,7 +170,7 @@ export default function AIInsightsPage() {
                 </Badge>
               </div>
               <div className="text-sm text-muted-foreground">
-                Accuracy: 94.2% • Last trained: 2 hours ago
+                Accuracy: {advancedAIInsights.aiAccuracy}% • Last trained: 2 hours ago
               </div>
             </div>
             
@@ -255,15 +256,15 @@ export default function AIInsightsPage() {
       {selectedView === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ChurnPredictionPanel 
-            predictions={sampleAIInsights.churnPrediction.slice(0, 10)} 
+            predictions={advancedAIInsights.churnPrediction?.slice(0, 10) || []} 
             compact={true}
           />
           <LTVPredictionPanel 
-            predictions={sampleAIInsights.lifetimeValuePrediction.slice(0, 10)} 
+            predictions={advancedAIInsights.lifetimeValuePrediction?.slice(0, 10) || []} 
             compact={true}
           />
           <RecommendationEngine 
-            recommendations={sampleAIInsights.gameRecommendations.slice(0, 10)} 
+            recommendations={advancedAIInsights.gameRecommendations?.slice(0, 10) || []} 
             compact={true}
           />
           <RiskAssessmentPanel 
@@ -275,21 +276,21 @@ export default function AIInsightsPage() {
       
       {selectedView === 'churn' && (
         <ChurnPredictionPanel 
-          predictions={sampleAIInsights.churnPrediction} 
+          predictions={advancedAIInsights.churnPrediction || []} 
           compact={false}
         />
       )}
       
       {selectedView === 'ltv' && (
         <LTVPredictionPanel 
-          predictions={sampleAIInsights.lifetimeValuePrediction} 
+          predictions={advancedAIInsights.lifetimeValuePrediction || []} 
           compact={false}
         />
       )}
       
       {selectedView === 'recommendations' && (
         <RecommendationEngine 
-          recommendations={sampleAIInsights.gameRecommendations} 
+          recommendations={advancedAIInsights.gameRecommendations || []} 
           compact={false}
         />
       )}

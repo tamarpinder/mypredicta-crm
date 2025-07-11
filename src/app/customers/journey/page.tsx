@@ -62,7 +62,7 @@ export default function CustomerJourneyPage() {
 
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <Route className="h-3 w-3" />
         {journeyFlows.length} Active Journeys
       </Badge>

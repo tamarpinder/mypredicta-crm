@@ -60,7 +60,7 @@ export default function MarketingPage() {
 
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <BarChart3 className="h-3 w-3" />
         ROI: {averageROI.toFixed(1)}%
       </Badge>

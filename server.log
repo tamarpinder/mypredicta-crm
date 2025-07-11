@@ -1,0 +1,86 @@
+
+> predicta-crm@0.1.0 dev
+> next dev --turbopack
+
+ ⚠ Port 3000 is in use, using available port 3001 instead.
+   ▲ Next.js 15.3.5 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://10.0.0.20:3001
+
+ ✓ Starting...
+ ✓ Ready in 960ms
+ ○ Compiling /customers/journey ...
+ ✓ Compiled /customers/journey in 3.7s
+ GET /customers/journey 200 in 4196ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 595ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 928ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 258ms
+ ○ Compiling /analytics ...
+ ✓ Compiled /analytics in 1142ms
+ GET /analytics 200 in 1183ms
+ ○ Compiling /marketing ...
+ ✓ Compiled /marketing in 1149ms
+ GET /marketing 200 in 1183ms
+ ○ Compiling /campaigns ...
+ ✓ Compiled /campaigns in 1247ms
+ GET /campaigns 200 in 1315ms
+ ○ Compiling /ab-testing ...
+ ✓ Compiled /ab-testing in 796ms
+ GET /ab-testing 200 in 826ms
+ ○ Compiling /ai-insights ...
+ ✓ Compiled /ai-insights in 851ms
+ GET /ai-insights 200 in 884ms
+ ○ Compiling /alerts ...
+ ✓ Compiled /alerts in 1076ms
+ GET /alerts 200 in 1120ms
+ ○ Compiling /settings ...
+ ✓ Compiled /settings in 1104ms
+ GET /settings 200 in 1190ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1360ms
+ GET / 200 in 1402ms
+ ○ Compiling /auth ...
+ ✓ Compiled /auth in 707ms
+ GET /auth 200 in 744ms
+ GET /auth 200 in 137ms
+ GET / 200 in 88ms
+ GET / 200 in 22ms
+ ○ Compiling /customers ...
+ ✓ Compiled /customers in 1271ms
+ GET /customers 200 in 1336ms
+ ○ Compiling /segments ...
+ ✓ Compiled /segments in 1042ms
+ GET /segments 200 in 1102ms
+ GET /analytics 200 in 135ms
+ GET /marketing 200 in 116ms
+ GET /campaigns 200 in 61ms
+ GET /ab-testing 200 in 43ms
+ GET /ai-insights 200 in 145ms
+ GET /alerts 200 in 96ms
+ GET /settings 200 in 82ms
+ ○ Compiling /notifications ...
+ ✓ Compiled /notifications in 2.2s
+ GET /notifications 200 in 2249ms
+ GET /campaigns 200 in 104ms
+ ⚠ Fast Refresh had to perform a full reload when ./src/contexts/auth-context.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 0ms
+ GET /campaigns 200 in 627ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 322ms
+ GET /favicon.ico 200 in 317ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 335ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 270ms
+ ✓ Compiled in 570ms
+ ⚠ Fast Refresh had to perform a full reload when ./src/contexts/auth-context.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /campaigns 200 in 693ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 265ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 405ms
+ ⚠ Fast Refresh had to perform a full reload when ./src/contexts/auth-context.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 341ms
+ GET /campaigns 200 in 224ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 324ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 259ms
+ ✓ Compiled in 728ms
+ ✓ Compiled in 360ms
+ GET /campaigns 200 in 215ms
+[?25h

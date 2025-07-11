@@ -9,7 +9,7 @@ import { FlaskConical, Download, Settings, HelpCircle } from 'lucide-react';
 export default function ABTestingPage() {
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <FlaskConical className="h-3 w-3" />
         3 Active Tests
       </Badge>

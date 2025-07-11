@@ -40,8 +40,24 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
     return 'Standard Value';
   };
 
-  const getCustomerInfo = (customerId: string) => {
-    return sampleCustomers.find(c => c.id === customerId) || {
+  const getCustomerInfo = (customerId: string, prediction?: any) => {
+    // Try to find customer from sample data first
+    const existingCustomer = sampleCustomers.find(c => c.id === customerId);
+    if (existingCustomer) return existingCustomer;
+    
+    // Use advanced AI insights data if available
+    if (prediction?.customerName) {
+      const [firstName, ...lastNameParts] = prediction.customerName.split(' ');
+      return {
+        firstName,
+        lastName: lastNameParts.join(' '),
+        email: `${firstName.toLowerCase()}.${lastNameParts.join('').toLowerCase()}@email.com`,
+        lifetimeValue: prediction.currentValue || Math.floor(Math.random() * 25000) + 5000,
+        segment: prediction.predictedValue > 50000 ? 'high-value' : 'regular'
+      };
+    }
+    
+    return {
       firstName: 'Unknown',
       lastName: 'Customer',
       email: 'unknown@example.com',
@@ -79,7 +95,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
             
             <div className="space-y-3">
               {predictions.slice(0, 5).map((prediction, index) => {
-                const customer = getCustomerInfo(prediction.customerId);
+                const customer = getCustomerInfo(prediction.customerId, prediction);
                 return (
                   <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-3">
@@ -93,6 +109,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-xs text-muted-foreground">
+                          {prediction.location && `${prediction.location} • `}
                           Current: {formatCurrency(customer.lifetimeValue)}
                         </div>
                       </div>
@@ -102,7 +119,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                         {formatCurrency(prediction.predictedValue)}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {prediction.confidence.toFixed(0)}% confidence
+                        {prediction.confidence}% confidence
                       </div>
                     </div>
                   </div>
@@ -177,7 +194,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
         <CardContent>
           <div className="space-y-4">
             {highValuePredictions.map((prediction, index) => {
-              const customer = getCustomerInfo(prediction.customerId);
+              const customer = getCustomerInfo(prediction.customerId, prediction);
               const growthPotential = prediction.predictedValue - customer.lifetimeValue;
               const growthPercentage = ((growthPotential / customer.lifetimeValue) * 100);
               
@@ -195,7 +212,8 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          Current Segment: {customer.segment}
+                          {prediction.location && `${prediction.location} • `}
+                          Segment: {customer.segment}
                         </div>
                       </div>
                     </div>
@@ -204,7 +222,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                         {getValueLevel(prediction.predictedValue)}
                       </Badge>
                       <div className="text-sm text-muted-foreground mt-1">
-                        {prediction.confidence.toFixed(0)}% confidence
+                        {prediction.confidence}% confidence
                       </div>
                     </div>
                   </div>
@@ -212,7 +230,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-sm mb-1">
                       <span>Confidence Level</span>
-                      <span>{prediction.confidence.toFixed(1)}%</span>
+                      <span>{prediction.confidence}%</span>
                     </div>
                     <Progress value={prediction.confidence} className="h-2" />
                   </div>
@@ -229,7 +247,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
                     <div>
                       <div className="text-sm text-muted-foreground">Growth Potential</div>
                       <div className="font-medium text-blue-600">
-                        +{formatCurrency(growthPotential)} ({growthPercentage.toFixed(0)}%)
+                        +{formatCurrency(prediction.growthPotential || growthPotential)} ({(prediction.growthPotential || growthPotential > 0 ? growthPercentage : 0).toFixed(0)}%)
                       </div>
                     </div>
                   </div>

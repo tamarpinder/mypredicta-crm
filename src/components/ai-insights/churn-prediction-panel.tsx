@@ -42,8 +42,23 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
     return 'Low Risk';
   };
 
-  const getCustomerInfo = (customerId: string) => {
-    return sampleCustomers.find(c => c.id === customerId) || {
+  const getCustomerInfo = (customerId: string, prediction?: any) => {
+    // Try to find customer from sample data first
+    const existingCustomer = sampleCustomers.find(c => c.id === customerId);
+    if (existingCustomer) return existingCustomer;
+    
+    // Use advanced AI insights data if available
+    if (prediction?.customerName) {
+      const [firstName, ...lastNameParts] = prediction.customerName.split(' ');
+      return {
+        firstName,
+        lastName: lastNameParts.join(' '),
+        email: `${firstName.toLowerCase()}.${lastNameParts.join('').toLowerCase()}@email.com`,
+        lifetimeValue: prediction.estimatedLoss || Math.floor(Math.random() * 50000) + 10000
+      };
+    }
+    
+    return {
       firstName: 'Unknown',
       lastName: 'Customer',
       email: 'unknown@example.com',
@@ -80,7 +95,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
             
             <div className="space-y-3">
               {predictions.slice(0, 5).map((prediction, index) => {
-                const customer = getCustomerInfo(prediction.customerId);
+                const customer = getCustomerInfo(prediction.customerId, prediction);
                 return (
                   <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-3">
@@ -94,6 +109,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-xs text-muted-foreground">
+                          {prediction.location && `${prediction.location} • `}
                           {formatCurrency(customer.lifetimeValue)} LTV
                         </div>
                       </div>
@@ -175,7 +191,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
         <CardContent>
           <div className="space-y-4">
             {highRiskCustomers.map((prediction, index) => {
-              const customer = getCustomerInfo(prediction.customerId);
+              const customer = getCustomerInfo(prediction.customerId, prediction);
               return (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -190,6 +206,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-sm text-muted-foreground">
+                          {prediction.location && `${prediction.location} • `}
                           {customer.email}
                         </div>
                       </div>
@@ -214,12 +231,12 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
                   
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <div className="text-sm text-muted-foreground">Lifetime Value</div>
-                      <div className="font-medium">{formatCurrency(customer.lifetimeValue)}</div>
+                      <div className="text-sm text-muted-foreground">Estimated Loss</div>
+                      <div className="font-medium">{formatCurrency(prediction.estimatedLoss || customer.lifetimeValue)}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Risk Factors</div>
-                      <div className="font-medium">{prediction.factors.length} identified</div>
+                      <div className="text-sm text-muted-foreground">Days Since Activity</div>
+                      <div className="font-medium">{prediction.daysSinceLastActivity || 'N/A'} days</div>
                     </div>
                   </div>
                   
@@ -292,7 +309,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
           <div className="mt-4 p-3 bg-muted/50 rounded-lg">
             <div className="text-sm text-muted-foreground">
               <strong>Last Updated:</strong> 2 hours ago • 
-              <strong>Training Data:</strong> 24,847 customers • 
+              <strong>Training Data:</strong> {predictions.length > 1000 ? `${(predictions.length / 1000).toFixed(1)}k` : predictions.length} customers • 
               <strong>Next Update:</strong> Tomorrow 3:00 AM
             </div>
           </div>

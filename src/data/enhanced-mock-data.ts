@@ -1,8 +1,9 @@
 import type { Customer, Transaction, Campaign, GameMetrics, DashboardMetrics, AIInsights } from '@/types';
 import { generateCustomers, generateTransactions, generateCampaigns, generateGameMetrics, generateDashboardMetrics, generateAIInsights } from './mock-data-generator';
+import { bahamianCustomers } from './bahamas-customers';
 
-// Generate the large-scale mock data
-export const enhancedCustomers = generateCustomers(25000);
+// Use Bahamas-specific customers
+export const enhancedCustomers = bahamianCustomers;
 export const enhancedTransactions = generateTransactions(enhancedCustomers, 500000);
 export const enhancedCampaigns = generateCampaigns(100);
 export const enhancedGameMetrics = generateGameMetrics();

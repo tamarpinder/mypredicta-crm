@@ -30,18 +30,18 @@ function StatCard({ title, value, change, changeLabel, icon, trend }: StatCardPr
   const isNegative = trend === 'down';
   
   return (
-    <Card className="hover:shadow-sm transition-shadow">
+    <Card className="hover:shadow-sm transition-shadow bg-white border border-gray-200">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
+            <div className="p-2 bg-[var(--color-predicta-gold)]/10 rounded-lg">
               {icon}
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-sm font-medium text-[var(--color-predicta-neutral)]">
                 {title}
               </p>
-              <p className="text-2xl font-bold text-foreground">
+              <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
                 {value}
               </p>
             </div>
@@ -52,14 +52,14 @@ function StatCard({ title, value, change, changeLabel, icon, trend }: StatCardPr
               "flex items-center gap-1 text-sm font-medium",
               isPositive && "text-green-600",
               isNegative && "text-red-600",
-              trend === 'neutral' && "text-muted-foreground"
+              trend === 'neutral' && "text-gray-600"
             )}>
               {isPositive && <TrendingUp className="h-4 w-4" />}
               {isNegative && <TrendingDown className="h-4 w-4" />}
               {change > 0 && '+'}
               {change}%
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               {changeLabel}
             </p>
           </div>
@@ -87,16 +87,16 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
       {/* Quick Actions */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-lg font-semibold text-white">
             Today&apos;s Overview
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-white/70">
             Real-time insights and key metrics
           </p>
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="gap-2">
+          <Badge variant="outline" className="gap-2 text-white border-white/30">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             Live Data
           </Badge>
@@ -105,7 +105,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
             variant="outline" 
             size="sm" 
             onClick={onRefresh}
-            className="gap-2"
+            className="gap-2 text-white border-white/30 hover:bg-white/10"
           >
             <RefreshCw className="h-4 w-4" />
             Refresh
@@ -115,7 +115,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
             variant="outline" 
             size="sm" 
             onClick={onExport}
-            className="gap-2"
+            className="gap-2 text-white border-white/30 hover:bg-white/10"
           >
             <Download className="h-4 w-4" />
             Export
@@ -130,7 +130,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
           value={formatCurrency(stats.totalRevenue)}
           change={12.5}
           changeLabel="vs last month"
-          icon={<DollarSign className="h-5 w-5 text-primary" />}
+          icon={<DollarSign className="h-5 w-5 text-[var(--color-predicta-gold)]" />}
           trend="up"
         />
         
@@ -139,7 +139,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
           value={formatNumber(stats.activeCustomers)}
           change={8.2}
           changeLabel="vs last month"
-          icon={<Users className="h-5 w-5 text-primary" />}
+          icon={<Users className="h-5 w-5 text-[var(--color-predicta-navy)]" />}
           trend="up"
         />
         
@@ -148,7 +148,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
           value={formatCurrency(stats.dailyRevenue)}
           change={-2.1}
           changeLabel="vs yesterday"
-          icon={<Activity className="h-5 w-5 text-primary" />}
+          icon={<Activity className="h-5 w-5 text-[var(--color-predicta-cyan)]" />}
           trend="down"
         />
         
@@ -157,7 +157,7 @@ export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderP
           value={`${stats.conversionRate.toFixed(1)}%`}
           change={1.3}
           changeLabel="vs last week"
-          icon={<TrendingUp className="h-5 w-5 text-primary" />}
+          icon={<TrendingUp className="h-5 w-5 text-green-600" />}
           trend="up"
         />
       </div>

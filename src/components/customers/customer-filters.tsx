@@ -14,6 +14,7 @@ interface CustomerFiltersProps {
     vipLevel: string;
     country: string;
     search: string;
+    lastActivityDays?: string;
   };
   onFiltersChange: (filters: {
     segment: string;
@@ -21,6 +22,7 @@ interface CustomerFiltersProps {
     vipLevel: string;
     country: string;
     search: string;
+    lastActivityDays?: string;
   }) => void;
 }
 
@@ -40,7 +42,8 @@ export function CustomerFilters({ filters, onFiltersChange }: CustomerFiltersPro
       status: 'all',
       vipLevel: 'all',
       country: 'all',
-      search: ''
+      search: '',
+      lastActivityDays: 'all'
     });
   };
 
@@ -62,7 +65,7 @@ export function CustomerFilters({ filters, onFiltersChange }: CustomerFiltersPro
       </div>
 
       {/* Filter Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="space-y-2">
           <Label htmlFor="segment">Customer Segment</Label>
           <Select value={filters.segment} onValueChange={(value) => updateFilter('segment', value)}>
@@ -130,6 +133,24 @@ export function CustomerFilters({ filters, onFiltersChange }: CustomerFiltersPro
               <SelectItem value="Paradise Island">Paradise Island</SelectItem>
               <SelectItem value="Lyford Cay">Lyford Cay</SelectItem>
               <SelectItem value="Old Fort Bay">Old Fort Bay</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="lastActivity">Last Activity</Label>
+          <Select value={filters.lastActivityDays || 'all'} onValueChange={(value) => updateFilter('lastActivityDays', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Time" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Time</SelectItem>
+              <SelectItem value="7">Last 7 Days</SelectItem>
+              <SelectItem value="14">Last 14 Days</SelectItem>
+              <SelectItem value="30">Last 30 Days</SelectItem>
+              <SelectItem value="60">Last 60 Days</SelectItem>
+              <SelectItem value="90">Last 90 Days</SelectItem>
+              <SelectItem value="inactive">Inactive (90+ days)</SelectItem>
             </SelectContent>
           </Select>
         </div>

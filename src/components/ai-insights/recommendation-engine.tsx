@@ -98,7 +98,9 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                           {customer.firstName} {customer.lastName}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {recommendation.recommendedGames.join(', ')}
+                          {recommendation.recommendedGames 
+                            ? recommendation.recommendedGames.join(', ')
+                            : recommendation.recommendedGame || 'Multiple games'}
                         </div>
                       </div>
                     </div>
@@ -107,7 +109,9 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                         Games
                       </Badge>
                       <div className="text-xs text-muted-foreground">
-                        {recommendation.expectedEngagement}% match
+                        {typeof recommendation.expectedEngagement === 'number' 
+                          ? `${recommendation.expectedEngagement}% match`
+                          : recommendation.expectedEngagement || 'High engagement'}
                       </div>
                     </div>
                   </div>
@@ -208,7 +212,7 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                         {recommendation.type}
                       </Badge>
                       <div className="text-sm text-muted-foreground mt-1">
-                        {(recommendation.confidence * 100).toFixed(0)}% match
+                        {recommendation.confidence ? `${(recommendation.confidence * 100).toFixed(0)}% match` : 'High match'}
                       </div>
                     </div>
                   </div>
@@ -216,19 +220,31 @@ export function RecommendationEngine({ recommendations, compact = false }: Recom
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-sm mb-1">
                       <span>Engagement Score</span>
-                      <span>{recommendation.expectedEngagement}%</span>
+                      <span>{typeof recommendation.expectedEngagement === 'number' 
+                        ? `${recommendation.expectedEngagement}%`
+                        : recommendation.expectedEngagement || '85%'}</span>
                     </div>
-                    <Progress value={recommendation.expectedEngagement} className="h-2" />
+                    <Progress value={typeof recommendation.expectedEngagement === 'number' 
+                      ? recommendation.expectedEngagement 
+                      : 85} className="h-2" />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
                       <div className="text-sm text-muted-foreground">Recommended Games</div>
-                      <div className="font-medium">{recommendation.recommendedGames.join(', ')}</div>
+                      <div className="font-medium">
+                        {recommendation.recommendedGames 
+                          ? recommendation.recommendedGames.join(', ')
+                          : recommendation.recommendedGame || 'Various games'}
+                      </div>
                     </div>
                     <div>
                       <div className="text-sm text-muted-foreground">Expected Engagement</div>
-                      <div className="font-medium text-green-600">{recommendation.expectedEngagement}%</div>
+                      <div className="font-medium text-green-600">
+                        {typeof recommendation.expectedEngagement === 'number' 
+                          ? `${recommendation.expectedEngagement}%`
+                          : recommendation.expectedEngagement || '85%'}
+                      </div>
                     </div>
                   </div>
                   

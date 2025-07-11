@@ -37,6 +37,7 @@ import {
   Activity,
   DollarSign
 } from 'lucide-react';
+import { ModernPagination } from '@/components/ui/modern-pagination';
 import { Customer } from '@/types';
 import Link from 'next/link';
 import { formatCurrency } from '@/utils/format';
@@ -49,10 +50,11 @@ interface CustomersTableProps {
     vipLevel: string;
     country: string;
     search: string;
+    lastActivityDays?: string;
   };
 }
 
-type SortField = 'name' | 'email' | 'lifetimeValue' | 'registrationDate' | 'lastLoginDate' | 'churnScore';
+type SortField = 'name' | 'email' | 'lifetimeValue' | 'registrationDate' | 'lastLoginDate' | 'lastActivity' | 'churnScore' | 'totalDeposits' | 'city';
 type SortDirection = 'asc' | 'desc';
 
 export function CustomersTable({ customers, filters }: CustomersTableProps) {
@@ -89,8 +91,20 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
         if (filters.vipLevel !== 'none' && customer.vipLevel !== filters.vipLevel) return false;
       }
 
-      // Country filter
-      if (filters.country && filters.country !== 'all' && customer.country !== filters.country) return false;
+      // Location filter (city in Bahamas)
+      if (filters.country && filters.country !== 'all' && customer.city !== filters.country) return false;
+
+      // Last activity filter
+      if (filters.lastActivityDays && filters.lastActivityDays !== 'all') {
+        const daysSinceActivity = (Date.now() - new Date(customer.lastActivity).getTime()) / (1000 * 60 * 60 * 24);
+        
+        if (filters.lastActivityDays === 'inactive') {
+          if (daysSinceActivity < 90) return false;
+        } else {
+          const daysLimit = parseInt(filters.lastActivityDays);
+          if (daysSinceActivity > daysLimit) return false;
+        }
+      }
 
       return true;
     });
@@ -121,9 +135,21 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
           aValue = new Date(a.lastLoginDate);
           bValue = new Date(b.lastLoginDate);
           break;
+        case 'lastActivity':
+          aValue = new Date(a.lastActivity);
+          bValue = new Date(b.lastActivity);
+          break;
         case 'churnScore':
           aValue = a.churnScore;
           bValue = b.churnScore;
+          break;
+        case 'totalDeposits':
+          aValue = a.totalDeposits;
+          bValue = b.totalDeposits;
+          break;
+        case 'city':
+          aValue = a.city;
+          bValue = b.city;
           break;
         default:
           aValue = a.lifetimeValue;
@@ -296,13 +322,19 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
               <TableHead>
                 <SortHeader field="email">Contact</SortHeader>
               </TableHead>
+              <TableHead>
+                <SortHeader field="city">Location</SortHeader>
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Segment</TableHead>
               <TableHead>
                 <SortHeader field="lifetimeValue">Lifetime Value</SortHeader>
               </TableHead>
               <TableHead>
-                <SortHeader field="lastLoginDate">Last Activity</SortHeader>
+                <SortHeader field="totalDeposits">Total Deposits</SortHeader>
+              </TableHead>
+              <TableHead>
+                <SortHeader field="lastActivity">Last Activity</SortHeader>
               </TableHead>
               <TableHead>
                 <SortHeader field="churnScore">Risk</SortHeader>
@@ -343,6 +375,12 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
                   </div>
                 </TableCell>
                 <TableCell>
+                  <div className="text-sm">
+                    <div className="font-medium">{customer.city}</div>
+                    <div className="text-muted-foreground">Bahamas</div>
+                  </div>
+                </TableCell>
+                <TableCell>
                   <div className="space-y-1">
                     {getStatusBadge(customer.status)}
                     {getVipBadge(customer)}
@@ -361,7 +399,12 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="text-sm">
-                    {formatDate(customer.lastLoginDate)}
+                    <span className="font-medium">{formatCurrency(customer.totalDeposits)}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    {formatDate(customer.lastActivity)}
                   </div>
                 </TableCell>
                 <TableCell>
@@ -415,42 +458,15 @@ export function CustomersTable({ customers, filters }: CustomersTableProps) {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between px-2">
-        <div className="text-sm text-muted-foreground">
-          Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredAndSortedCustomers.length)} of {filteredAndSortedCustomers.length} customers
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? "default" : "outline"}
-                size="sm"
-                onClick={() => setCurrentPage(page)}
-                className="w-8 h-8 p-0"
-              >
-                {page}
-              </Button>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <ModernPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        totalItems={filteredAndSortedCustomers.length}
+        itemsPerPage={itemsPerPage}
+        showInfo={true}
+        className="px-2"
+      />
     </div>
   );
 }

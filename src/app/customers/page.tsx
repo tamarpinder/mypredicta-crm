@@ -27,7 +27,8 @@ export default function CustomersPage() {
     status: 'all',
     vipLevel: 'all',
     country: 'all',
-    search: ''
+    search: '',
+    lastActivityDays: 'all'
   });
 
   // Calculate customer statistics
@@ -78,7 +79,7 @@ export default function CustomersPage() {
 
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <TrendingUp className="h-3 w-3" />
         Avg LTV: {formatCurrency(averageLifetimeValue)}
       </Badge>

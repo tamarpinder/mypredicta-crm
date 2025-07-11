@@ -22,7 +22,13 @@ import {
   Download, 
   Upload,
   Save,
-  RefreshCw
+  RefreshCw,
+  Users,
+  Plus,
+  Edit,
+  Trash2,
+  Crown,
+  UserCog
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -60,6 +66,46 @@ export default function SettingsPage() {
   });
 
   const [activeTab, setActiveTab] = useState('general');
+  
+  // Mock user data
+  const [users, setUsers] = useState([
+    {
+      id: '1',
+      name: 'Admin User',
+      email: 'admin@predicta.com',
+      role: 'admin',
+      status: 'active',
+      lastLogin: '2024-01-10T10:30:00Z',
+      avatar: null
+    },
+    {
+      id: '2',
+      name: 'John Manager',
+      email: 'john@predicta.com',
+      role: 'manager',
+      status: 'active',
+      lastLogin: '2024-01-09T15:45:00Z',
+      avatar: null
+    },
+    {
+      id: '3',
+      name: 'Sarah Analyst',
+      email: 'sarah@predicta.com',
+      role: 'analyst',
+      status: 'active',
+      lastLogin: '2024-01-08T09:20:00Z',
+      avatar: null
+    },
+    {
+      id: '4',
+      name: 'Mike Support',
+      email: 'mike@predicta.com',
+      role: 'support',
+      status: 'inactive',
+      lastLogin: '2024-01-01T12:00:00Z',
+      avatar: null
+    }
+  ]);
 
   const handleSettingChange = (key: string, value: unknown) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -98,8 +144,9 @@ export default function SettingsPage() {
       actions={actions}
     >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
@@ -182,6 +229,129 @@ export default function SettingsPage() {
                       <SelectItem value="fr">French</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* User Management */}
+        <TabsContent value="users" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  User Management
+                </CardTitle>
+                <Button className="gap-2 bg-[var(--color-predicta-navy)] hover:bg-[var(--color-predicta-navy-dark)]">
+                  <Plus className="h-4 w-4" />
+                  Add User
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {users.map((user) => (
+                  <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-[var(--color-predicta-navy)] rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-[var(--color-predicta-navy)]">{user.name}</div>
+                        <div className="text-sm text-[var(--color-predicta-neutral)]">{user.email}</div>
+                        <div className="text-xs text-[var(--color-predicta-neutral)]">
+                          Last login: {new Date(user.lastLogin).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Badge 
+                        variant={user.status === 'active' ? 'default' : 'secondary'}
+                        className={user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
+                      >
+                        {user.status}
+                      </Badge>
+                      <Badge 
+                        variant="outline" 
+                        className={`gap-1 ${
+                          user.role === 'admin' ? 'border-[var(--color-predicta-gold)] text-[var(--color-predicta-gold)]' :
+                          user.role === 'manager' ? 'border-blue-500 text-blue-600' :
+                          user.role === 'analyst' ? 'border-green-500 text-green-600' :
+                          'border-gray-400 text-gray-600'
+                        }`}
+                      >
+                        {user.role === 'admin' && <Crown className="h-3 w-3" />}
+                        {user.role === 'manager' && <UserCog className="h-3 w-3" />}
+                        {user.role === 'analyst' && <User className="h-3 w-3" />}
+                        {user.role === 'support' && <User className="h-3 w-3" />}
+                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                      </Badge>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-red-600 hover:text-red-800">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-6 pt-6 border-t">
+                <h4 className="font-medium mb-4 text-[var(--color-predicta-navy)]">Role Permissions</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-3 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Crown className="h-4 w-4 text-[var(--color-predicta-gold)]" />
+                      <span className="font-medium">Admin</span>
+                    </div>
+                    <ul className="text-sm text-[var(--color-predicta-neutral)] space-y-1">
+                      <li>• Full system access</li>
+                      <li>• User management</li>
+                      <li>• Settings configuration</li>
+                      <li>• Data export/import</li>
+                    </ul>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <UserCog className="h-4 w-4 text-blue-600" />
+                      <span className="font-medium">Manager</span>
+                    </div>
+                    <ul className="text-sm text-[var(--color-predicta-neutral)] space-y-1">
+                      <li>• Customer management</li>
+                      <li>• Campaign creation</li>
+                      <li>• Analytics access</li>
+                      <li>• Team oversight</li>
+                    </ul>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <User className="h-4 w-4 text-green-600" />
+                      <span className="font-medium">Analyst</span>
+                    </div>
+                    <ul className="text-sm text-[var(--color-predicta-neutral)] space-y-1">
+                      <li>• Analytics and reports</li>
+                      <li>• Customer insights</li>
+                      <li>• Data visualization</li>
+                      <li>• Performance metrics</li>
+                    </ul>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <User className="h-4 w-4 text-gray-600" />
+                      <span className="font-medium">Support</span>
+                    </div>
+                    <ul className="text-sm text-[var(--color-predicta-neutral)] space-y-1">
+                      <li>• Customer support</li>
+                      <li>• Basic customer data</li>
+                      <li>• Ticket management</li>
+                      <li>• Communication tools</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </CardContent>

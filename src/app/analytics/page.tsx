@@ -34,55 +34,56 @@ import {
   AlertTriangle,
   Activity,
   MapPin,
-  Target
+  Target,
+  Trophy
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/utils/format';
 
 const revenueData = [
-  { month: 'Jan', revenue: 4200000, deposits: 3800000, withdrawals: 2100000, newCustomers: 1250 },
-  { month: 'Feb', revenue: 4500000, deposits: 4100000, withdrawals: 2300000, newCustomers: 1380 },
-  { month: 'Mar', revenue: 4800000, deposits: 4400000, withdrawals: 2500000, newCustomers: 1520 },
-  { month: 'Apr', revenue: 5100000, deposits: 4700000, withdrawals: 2700000, newCustomers: 1680 },
-  { month: 'May', revenue: 5400000, deposits: 5000000, withdrawals: 2900000, newCustomers: 1750 },
-  { month: 'Jun', revenue: 5700000, deposits: 5300000, withdrawals: 3100000, newCustomers: 1820 }
+  { month: 'Jan', revenue: 18200000, deposits: 28500000, withdrawals: 15800000, newCustomers: 2150 },
+  { month: 'Feb', revenue: 19500000, deposits: 31200000, withdrawals: 16900000, newCustomers: 2280 },
+  { month: 'Mar', revenue: 20800000, deposits: 33800000, withdrawals: 18200000, newCustomers: 2420 },
+  { month: 'Apr', revenue: 21100000, deposits: 35400000, withdrawals: 19100000, newCustomers: 2580 },
+  { month: 'May', revenue: 22400000, deposits: 37800000, withdrawals: 20300000, newCustomers: 2650 },
+  { month: 'Jun', revenue: 23700000, deposits: 39200000, withdrawals: 21400000, newCustomers: 2720 }
 ];
 
 const gameTypeData = [
-  { name: 'Sports Betting', value: 18500000, percentage: 35.2, color: 'var(--color-sports)' },
-  { name: 'Casino Games', value: 15200000, percentage: 28.9, color: 'var(--color-casino)' },
-  { name: 'Live Games', value: 12800000, percentage: 24.3, color: 'var(--color-live-games)' },
-  { name: 'Lottery', value: 6100000, percentage: 11.6, color: 'var(--color-lottery)' }
+  { name: 'Sports Betting', value: 68500000, percentage: 30.2, color: 'var(--color-sports)' },
+  { name: 'Casino Games', value: 58200000, percentage: 25.7, color: 'var(--color-casino)' },
+  { name: 'Island Luck Lottery', value: 52100000, percentage: 23.0, color: 'var(--color-lottery)' },
+  { name: 'Live Games', value: 48200000, percentage: 21.1, color: 'var(--color-live-games)' }
 ];
 
 const customerSegmentData = [
-  { segment: 'High Value', customers: 1250, revenue: 22500000, avgLTV: 18000, color: 'var(--color-high-value)' },
-  { segment: 'Regular', customers: 8900, revenue: 18200000, avgLTV: 2045, color: 'var(--color-predicta-cyan)' },
-  { segment: 'At Risk', customers: 2100, revenue: 8900000, avgLTV: 4238, color: 'var(--color-at-risk)' },
-  { segment: 'Churned', customers: 890, revenue: 3100000, avgLTV: 3483, color: 'var(--color-predicta-neutral)' }
+  { segment: 'High Value', customers: 2850, revenue: 87500000, avgLTV: 30700, color: 'var(--color-high-value)' },
+  { segment: 'Regular', customers: 15900, revenue: 68200000, avgLTV: 4289, color: 'var(--color-predicta-cyan)' },
+  { segment: 'At Risk', customers: 4100, revenue: 28900000, avgLTV: 7049, color: 'var(--color-at-risk)' },
+  { segment: 'Churned', customers: 2150, revenue: 12400000, avgLTV: 5767, color: 'var(--color-predicta-neutral)' }
 ];
 
 const geographicData = [
-  { country: 'United States', customers: 4200, revenue: 18500000, percentage: 35.2 },
-  { country: 'Canada', customers: 2800, revenue: 12300000, percentage: 23.4 },
-  { country: 'United Kingdom', customers: 2100, revenue: 9800000, percentage: 18.6 },
-  { country: 'Australia', customers: 1500, revenue: 7200000, percentage: 13.7 },
-  { country: 'Others', customers: 2540, revenue: 4800000, percentage: 9.1 }
+  { country: 'Nassau', customers: 12800, revenue: 48500000, percentage: 42.1 },
+  { country: 'Paradise Island', customers: 8200, revenue: 35200000, percentage: 28.9 },
+  { country: 'Freeport', customers: 5400, revenue: 18800000, percentage: 16.8 },
+  { country: 'Cable Beach', customers: 2100, revenue: 8400000, percentage: 7.2 },
+  { country: 'Other Islands', customers: 1850, revenue: 6100000, percentage: 5.0 }
 ];
 
 const customerRetentionData = [
-  { month: 'Jan', newCustomers: 1250, retained: 11200, churnRate: 5.2 },
-  { month: 'Feb', newCustomers: 1380, retained: 11800, churnRate: 4.8 },
-  { month: 'Mar', newCustomers: 1520, retained: 12500, churnRate: 4.5 },
-  { month: 'Apr', newCustomers: 1680, retained: 13200, churnRate: 4.2 },
-  { month: 'May', newCustomers: 1750, retained: 13800, churnRate: 3.9 },
-  { month: 'Jun', newCustomers: 1820, retained: 14500, churnRate: 3.6 }
+  { month: 'Jan', newCustomers: 2150, retained: 22200, churnRate: 5.2 },
+  { month: 'Feb', newCustomers: 2280, retained: 22800, churnRate: 4.8 },
+  { month: 'Mar', newCustomers: 2420, retained: 23500, churnRate: 4.5 },
+  { month: 'Apr', newCustomers: 2580, retained: 24200, churnRate: 4.2 },
+  { month: 'May', newCustomers: 2650, retained: 24800, churnRate: 3.9 },
+  { month: 'Jun', newCustomers: 2720, retained: 25500, churnRate: 3.6 }
 ];
 
 const campaignPerformanceData = [
-  { name: 'Email Campaigns', sent: 125000, opened: 87500, clicked: 31250, converted: 8750, roi: 245 },
-  { name: 'SMS Campaigns', sent: 85000, opened: 76500, clicked: 25500, converted: 6800, roi: 189 },
-  { name: 'Push Notifications', sent: 95000, opened: 71250, clicked: 23750, converted: 5700, roi: 134 },
-  { name: 'Social Media', sent: 45000, opened: 36000, clicked: 12600, converted: 3150, roi: 98 }
+  { name: 'Email Campaigns', sent: 325000, opened: 227500, clicked: 81250, converted: 22750, roi: 285 },
+  { name: 'SMS Campaigns', sent: 185000, opened: 166500, clicked: 55500, converted: 14800, roi: 225 },
+  { name: 'Push Notifications', sent: 295000, opened: 201250, clicked: 63750, converted: 15700, roi: 164 },
+  { name: 'Social Media', sent: 145000, opened: 116000, clicked: 40600, converted: 10150, roi: 128 }
 ];
 
 interface TooltipPayload {
@@ -90,6 +91,9 @@ interface TooltipPayload {
   value: number;
   color: string;
 }
+
+// Import lottery data
+import { lotteryStats } from '@/data/lottery-data';
 
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState('6M');
@@ -120,7 +124,7 @@ export default function AnalyticsPage() {
   const actions = (
     <div className="flex items-center gap-3">
       <Select value={timeRange} onValueChange={setTimeRange}>
-        <SelectTrigger className="w-32">
+        <SelectTrigger className="w-32 text-white border-white/30 hover:bg-white/10">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -153,7 +157,7 @@ export default function AnalyticsPage() {
                   Total Revenue
                 </p>
                 <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
-                  {formatCurrency(52600000)}
+                  {formatCurrency(125000000)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
@@ -176,7 +180,7 @@ export default function AnalyticsPage() {
                   Active Customers
                 </p>
                 <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
-                  {formatNumber(25847)}
+                  {formatNumber(25000)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
@@ -199,7 +203,7 @@ export default function AnalyticsPage() {
                   Average LTV
                 </p>
                 <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
-                  {formatCurrency(2847)}
+                  {formatCurrency(5000)}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-3 w-3 text-[var(--color-profit)]" />
@@ -222,7 +226,7 @@ export default function AnalyticsPage() {
                   Churn Rate
                 </p>
                 <p className="text-2xl font-bold text-[var(--color-predicta-navy)]">
-                  3.6%
+                  6.8%
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingDown className="h-3 w-3 text-[var(--color-profit)]" />
@@ -336,7 +340,7 @@ export default function AnalyticsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5" />
-            Geographic Distribution
+            Bahamas Islands Distribution
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -398,6 +402,84 @@ export default function AnalyticsPage() {
               <Line type="monotone" dataKey="churnRate" stroke="var(--color-at-risk)" name="Churn Rate %" strokeWidth={2} />
             </ComposedChart>
           </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Lottery Analytics */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Trophy className="h-5 w-5" />
+            Island Luck Lottery Performance
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[var(--color-predicta-gold)]">
+                {formatNumber(lotteryStats.totalWinners)}
+              </div>
+              <div className="text-sm text-muted-foreground">Total Winners (30d)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {formatCurrency(lotteryStats.totalPrizeAmount)}
+              </div>
+              <div className="text-sm text-muted-foreground">Total Prizes Paid</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">
+                {formatCurrency(lotteryStats.largestPrize)}
+              </div>
+              <div className="text-sm text-muted-foreground">Largest Prize</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {lotteryStats.jackpotWinners}
+              </div>
+              <div className="text-sm text-muted-foreground">Jackpot Winners</div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Top Winning Locations */}
+            <div>
+              <h4 className="font-medium mb-3">Top Winning Locations</h4>
+              <div className="space-y-2">
+                {Object.entries(lotteryStats.winnersByLocation)
+                  .sort(([,a], [,b]) => b - a)
+                  .slice(0, 5)
+                  .map(([location, count], index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="font-medium">{location}</span>
+                      </div>
+                      <Badge variant="outline">{count} winners</Badge>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            
+            {/* Popular Games */}
+            <div>
+              <h4 className="font-medium mb-3">Popular Lottery Games</h4>
+              <div className="space-y-2">
+                {Object.entries(lotteryStats.winnersByGame)
+                  .sort(([,a], [,b]) => b - a)
+                  .slice(0, 5)
+                  .map(([game, count], index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                      <span className="font-medium">{game}</span>
+                      <div className="flex items-center gap-2">
+                        <Progress value={(count / lotteryStats.totalWinners) * 100} className="w-20 h-2" />
+                        <span className="text-sm text-muted-foreground">{count}</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 

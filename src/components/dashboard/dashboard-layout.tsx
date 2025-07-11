@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Navigation } from './navigation';
 import { PageTransition } from '@/components/ui/page-transition';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -24,10 +25,12 @@ export function DashboardLayout({
       <div className="flex h-screen">
         {/* Sidebar */}
         <aside className="flex-shrink-0 hidden md:flex">
-          <Navigation 
-            collapsed={sidebarCollapsed}
-            onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-          />
+          <ErrorBoundary>
+            <Navigation 
+              collapsed={sidebarCollapsed}
+              onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+            />
+          </ErrorBoundary>
         </aside>
 
         {/* Main Content */}
@@ -61,9 +64,11 @@ export function DashboardLayout({
           {/* Page Content */}
           <div className="flex-1 overflow-auto">
             <div className="p-6">
-              <PageTransition>
-                {children}
-              </PageTransition>
+              <ErrorBoundary>
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </ErrorBoundary>
             </div>
           </div>
         </main>

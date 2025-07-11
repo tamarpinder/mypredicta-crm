@@ -14,25 +14,42 @@ export function SplashScreen({ onComplete, duration = 3000 }: SplashScreenProps)
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, duration / 50);
+    let progressInterval: NodeJS.Timeout;
+    let timer: NodeJS.Timeout;
+    let fadeTimer: NodeJS.Timeout;
 
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => {
-        onComplete?.();
-      }, 500);
-    }, duration);
+    try {
+      progressInterval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, duration / 50);
+
+      timer = setTimeout(() => {
+        setIsVisible(false);
+        fadeTimer = setTimeout(() => {
+          try {
+            onComplete?.();
+          } catch (error) {
+            console.error('Error in splash screen completion:', error);
+            // Fallback: still call onComplete after a short delay
+            setTimeout(() => onComplete?.(), 100);
+          }
+        }, 500);
+      }, duration);
+    } catch (error) {
+      console.error('Error setting up splash screen:', error);
+      // Fallback: immediately call onComplete
+      setTimeout(() => onComplete?.(), 100);
+    }
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(fadeTimer);
       clearInterval(progressInterval);
     };
   }, [duration, onComplete]);

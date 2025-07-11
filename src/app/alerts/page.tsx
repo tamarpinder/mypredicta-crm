@@ -9,7 +9,7 @@ import { AlertTriangle, Settings, Download, Plus } from 'lucide-react';
 export default function AlertsPage() {
   const actions = (
     <div className="flex items-center gap-3">
-      <Badge variant="outline" className="gap-1">
+      <Badge variant="outline" className="gap-1 text-white border-white/30">
         <AlertTriangle className="h-3 w-3" />
         5 Active Rules
       </Badge>

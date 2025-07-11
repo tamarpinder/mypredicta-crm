@@ -1,4 +1,5 @@
 import { Customer, Transaction, Campaign, GameMetrics, DashboardMetrics, AIInsights } from '@/types';
+import { generateDashboardMetrics } from '@/utils/revenue-generator';
 
 export const sampleCustomers: Customer[] = [
   {
@@ -323,21 +324,24 @@ export const sampleGameMetrics: GameMetrics[] = [
   }
 ];
 
+// Generate dynamic metrics on each import
+const generatedMetrics = generateDashboardMetrics();
+
 export const sampleDashboardMetrics: DashboardMetrics = {
   totalCustomers: 25000,
-  activeCustomers: 18750,
-  newCustomers: 1250,
-  totalRevenue: 53000000,
-  monthlyRevenue: 4416667,
-  weeklyRevenue: 1019231,
-  dailyRevenue: 145205,
-  totalDeposits: 67500000,
-  totalWithdrawals: 45200000,
-  totalBets: 89600000,
-  averageCustomerValue: 2120,
-  churnRate: 8.5,
-  conversionRate: 4.2,
-  customerSatisfactionScore: 87.5
+  activeCustomers: generatedMetrics.activeCustomers,
+  newCustomers: Math.floor(25000 * 0.05), // 5% are new
+  totalRevenue: generatedMetrics.totalRevenue,
+  monthlyRevenue: Math.floor(generatedMetrics.totalRevenue / 12),
+  weeklyRevenue: Math.floor(generatedMetrics.totalRevenue / 52),
+  dailyRevenue: generatedMetrics.dailyRevenue,
+  totalDeposits: Math.floor(generatedMetrics.totalRevenue * 1.5),
+  totalWithdrawals: Math.floor(generatedMetrics.totalRevenue * 0.79),
+  totalBets: Math.floor(generatedMetrics.totalRevenue * 2.285),
+  averageCustomerValue: Math.floor(generatedMetrics.totalRevenue / 25000),
+  churnRate: 6.8,
+  conversionRate: generatedMetrics.conversionRate,
+  customerSatisfactionScore: 89.2
 };
 
 export const sampleAIInsights: AIInsights = {
