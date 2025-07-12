@@ -128,7 +128,7 @@ export function Navigation({ collapsed = false, onToggle }: NavigationProps) {
           "flex items-center gap-3 transition-all duration-300",
           collapsed && "justify-center"
         )}>
-          <div className="relative w-[144px] h-[144px] flex-shrink-0">
+          <div className="relative w-[101px] h-[101px] flex-shrink-0">
             <Image
               src={COMPANY_INFO.logo}
               alt={COMPANY_INFO.name}

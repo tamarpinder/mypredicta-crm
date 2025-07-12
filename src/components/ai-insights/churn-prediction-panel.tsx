@@ -97,7 +97,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
               {predictions.slice(0, 5).map((prediction, index) => {
                 const customer = getCustomerInfo(prediction.customerId, prediction);
                 return (
-                  <div key={`prediction-${prediction.customerId || index}`} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div key={`churn-prediction-${index}-${prediction.customerId}`} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="text-xs">
@@ -193,7 +193,7 @@ export function ChurnPredictionPanel({ predictions, compact = false }: ChurnPred
             {highRiskCustomers.map((prediction, index) => {
               const customer = getCustomerInfo(prediction.customerId, prediction);
               return (
-                <div key={`high-risk-${prediction.customerId || index}`} className="border rounded-lg p-4">
+                <div key={`churn-high-risk-${index}-${prediction.customerId}`} className="border rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">

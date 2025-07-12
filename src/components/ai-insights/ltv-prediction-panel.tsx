@@ -97,7 +97,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
               {predictions.slice(0, 5).map((prediction, index) => {
                 const customer = getCustomerInfo(prediction.customerId, prediction);
                 return (
-                  <div key={`ltv-prediction-${prediction.customerId || index}`} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div key={`ltv-prediction-${index}-${prediction.customerId}`} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="text-xs">
@@ -199,7 +199,7 @@ export function LTVPredictionPanel({ predictions, compact = false }: LTVPredicti
               const growthPercentage = ((growthPotential / customer.lifetimeValue) * 100);
               
               return (
-                <div key={`high-value-${prediction.customerId || index}`} className="border rounded-lg p-4">
+                <div key={`ltv-high-value-${index}-${prediction.customerId}`} className="border rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">

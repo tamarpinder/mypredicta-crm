@@ -1,6 +1,16 @@
 import { bahamianCustomers } from './bahamas-customers';
 import { AIInsights } from '@/types';
 
+// Fixed seed for Math.random to ensure deterministic results across server/client
+const originalRandom = Math.random;
+let seed = 12345;
+Math.random = () => {
+  seed = (seed * 9301 + 49297) % 233280;
+  return seed / 233280;
+};
+
+// Memoization to ensure data is generated only once
+let cachedInsights: AIInsights | null = null;
 
 const generateLocation = () => {
   const locations = [
@@ -179,7 +189,7 @@ const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled;
 };
 
-export const advancedAIInsights: AIInsights = {
+const generateAdvancedAIInsights = (): AIInsights => ({
   churnPrediction: shuffleArray(generateHighRiskCustomers()).slice(0, 10), // Limit to 10 for better UX
   lifetimeValuePrediction: shuffleArray(generateLTVPredictions()).slice(0, 10), // Limit to 10 for better UX
   gameRecommendations: shuffleArray(generateGameRecommendations()).slice(0, 10), // Limit to 10 for better UX
@@ -193,7 +203,7 @@ export const advancedAIInsights: AIInsights = {
   totalHighRiskCustomers: 5200,
   totalPredictiveModels: 8,
   aiAccuracy: 94.2,
-  lastUpdated: new Date().toISOString(),
+  lastUpdated: '2024-01-15T10:30:00.000Z', // Fixed timestamp for hydration consistency
   
   // Advanced predictions
   crossSellOpportunities: shuffleArray(Array.from({ length: 800 }, (_, i) => {
@@ -329,4 +339,15 @@ export const advancedAIInsights: AIInsights = {
       ][Math.floor(Math.random() * 5)]
     };
   })).slice(0, 10)
-};
+});
+
+// Memoized export to ensure consistent data across server/client
+export const advancedAIInsights: AIInsights = (() => {
+  if (!cachedInsights) {
+    cachedInsights = generateAdvancedAIInsights();
+  }
+  return cachedInsights;
+})();
+
+// Restore original Math.random after data generation
+Math.random = originalRandom;
