@@ -12,11 +12,11 @@ class LazyDataProvider {
     const key = `customers_${count}`;
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<Customer[]>((resolve) => {
@@ -47,11 +47,11 @@ class LazyDataProvider {
     const key = `transactions_${customers.length}_${count}`;
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<Transaction[]>((resolve) => {
@@ -80,11 +80,11 @@ class LazyDataProvider {
     const key = `campaigns_${count}`;
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<Campaign[]>((resolve) => {
@@ -113,11 +113,11 @@ class LazyDataProvider {
     const key = 'game_metrics';
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<GameMetrics[]>((resolve) => {
@@ -146,11 +146,11 @@ class LazyDataProvider {
     const key = `dashboard_metrics_${customers.length}_${transactions.length}`;
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<DashboardMetrics>((resolve) => {
@@ -179,11 +179,11 @@ class LazyDataProvider {
     const key = `ai_insights_${customers.length}`;
     
     if (this.cache.has(key)) {
-      return this.cache.get(key);
+      return this.cache.get(key) as any;
     }
 
     if (this.generating.has(key)) {
-      return this.generating.get(key);
+      return this.generating.get(key) as any;
     }
 
     const promise = new Promise<AIInsights>((resolve) => {

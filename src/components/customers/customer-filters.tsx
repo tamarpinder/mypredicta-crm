@@ -14,7 +14,7 @@ interface CustomerFiltersProps {
     vipLevel: string;
     country: string;
     search: string;
-    lastActivityDays?: string;
+    lastActivityDays: string;
   };
   onFiltersChange: (filters: {
     segment: string;
@@ -22,7 +22,7 @@ interface CustomerFiltersProps {
     vipLevel: string;
     country: string;
     search: string;
-    lastActivityDays?: string;
+    lastActivityDays: string;
   }) => void;
 }
 

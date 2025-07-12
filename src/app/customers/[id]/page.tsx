@@ -85,7 +85,7 @@ export default function CustomerDetailPage() {
     return (
       <Badge variant="outline" className={`${config?.color} gap-1`}>
         <span>{config?.icon}</span>
-        {customer.vipLevel?.charAt(0).toUpperCase() + customer.vipLevel?.slice(1)} VIP
+        {customer.vipLevel ? (customer.vipLevel.charAt(0).toUpperCase() + customer.vipLevel.slice(1)) : 'Standard'} VIP
       </Badge>
     );
   };

@@ -29,6 +29,13 @@ const getRandomCustomerId = () => {
   return AVAILABLE_CUSTOMER_IDS[Math.floor(Math.random() * AVAILABLE_CUSTOMER_IDS.length)];
 };
 
+// Generate random customer name
+const getRandomCustomerName = () => {
+  const firstNames = ['Marcus', 'Destiny', 'Kevin', 'Tamika', 'Andre', 'Latoya', 'Michael', 'Jasmine', 'Anthony', 'Tiffany'];
+  const lastNames = ['Williams', 'Johnson', 'Smith', 'Rolle', 'Ferguson', 'Thompson', 'Brown', 'Davis', 'Miller', 'Wilson'];
+  return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+};
+
 // Generate 5000+ high-risk customers
 const generateHighRiskCustomers = (count: number = 5200) => {
   return Array.from({ length: count }, (_, i) => {
@@ -69,6 +76,7 @@ const generateHighRiskCustomers = (count: number = 5200) => {
     
     return {
       customerId: getRandomCustomerId(), // Use actual customer IDs
+      customerName: getRandomCustomerName(),
       location,
       riskScore: +riskScore.toFixed(2),
       factors: selectedFactors,
@@ -88,6 +96,7 @@ const generateLTVPredictions = (count: number = 2500) => {
     
     return {
       customerId: getRandomCustomerId(), // Use actual customer IDs
+      customerName: getRandomCustomerName(),
       location,
       predictedValue,
       confidence,
@@ -122,6 +131,7 @@ const generateGameRecommendations = (count: number = 1000) => {
     
     return {
       customerId: getRandomCustomerId(), // Use actual customer IDs
+      customerName: getRandomCustomerName(),
       type: 'game',
       location,
       recommendedGame: game,
@@ -166,6 +176,7 @@ const generateRetentionPredictions = (count: number = 1500) => {
     
     return {
       customerId: getRandomCustomerId(), // Use actual customer IDs
+      customerName: getRandomCustomerName(),
       location,
       retentionProbability: +(retentionProbability * 100).toFixed(1),
       riskLevel: retentionProbability > 0.7 ? 'Low' : retentionProbability > 0.4 ? 'Medium' : 'High',
@@ -220,6 +231,7 @@ const generateAdvancedAIInsights = (): AIInsights => ({
     
     return {
       customerId: getRandomCustomerId(),
+      customerName: getRandomCustomerName(),
       location: generateLocation(),
       currentProducts: products[Math.floor(Math.random() * products.length)],
       recommendedProducts: recommendedProducts[Math.floor(Math.random() * recommendedProducts.length)],
@@ -235,6 +247,7 @@ const generateAdvancedAIInsights = (): AIInsights => ({
     
     return {
       customerId: getRandomCustomerId(),
+      customerName: getRandomCustomerName(),
       location: generateLocation(),
       currentTier: currentTiers[Math.floor(Math.random() * currentTiers.length)],
       targetTier: targetTiers[Math.floor(Math.random() * targetTiers.length)],

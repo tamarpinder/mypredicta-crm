@@ -66,7 +66,7 @@ export default function LotteryPage() {
         statistics: {
           totalPrizeAmount: filteredWinners.reduce((sum, w) => sum + w.prizeAmount, 0),
           totalWinners: filteredWinners.length,
-          gamesPlayed: [...new Set(filteredWinners.map(w => w.gameName))].length
+          gamesPlayed: [...new Set(filteredWinners.map(w => w.gameType))].length
         },
         games: lotteryGames,
         stats: lotteryStats
@@ -92,7 +92,7 @@ export default function LotteryPage() {
       toast({
         title: "Export Failed",
         description: "Unable to export lottery data. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     }
   };

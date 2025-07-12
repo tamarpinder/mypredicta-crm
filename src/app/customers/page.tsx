@@ -48,9 +48,9 @@ export default function CustomersPage() {
         timestamp: new Date().toISOString(),
         customers: enhancedCustomers.slice(0, 1000), // Export first 1000 for demo
         statistics: {
-          totalCustomers: displayedTotalCustomers,
+          totalCustomers,
           activeCustomers,
-          newCustomers,
+          newCustomers: Math.floor(totalCustomers * 0.15),
           highRiskCustomers,
           averageLifetimeValue
         }
@@ -76,7 +76,7 @@ export default function CustomersPage() {
       toast({
         title: "Export Failed",
         description: "Unable to export customer data. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     }
   };

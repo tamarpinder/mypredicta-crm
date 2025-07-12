@@ -78,6 +78,7 @@ interface DashboardHeaderProps {
   };
   onRefresh?: () => void;
   onExport?: () => void;
+  isRefreshing?: boolean;
 }
 
 export function DashboardHeader({ stats, onRefresh, onExport }: DashboardHeaderProps) {

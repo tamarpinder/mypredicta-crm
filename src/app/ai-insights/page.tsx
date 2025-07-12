@@ -53,7 +53,7 @@ export default function AIInsightsPage() {
       toast({
         title: "Refresh Failed",
         description: "Unable to refresh AI models. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     } finally {
       setIsRefreshing(false);
@@ -68,7 +68,7 @@ export default function AIInsightsPage() {
           churnPrediction: advancedAIInsights.churnPrediction,
           lifetimeValuePrediction: advancedAIInsights.lifetimeValuePrediction,
           gameRecommendations: advancedAIInsights.gameRecommendations,
-          riskAssessment: advancedAIInsights.riskAssessment
+          highRiskCustomers: advancedAIInsights.highRiskCustomers
         },
         statistics: {
           highRiskCustomers,
@@ -100,7 +100,7 @@ export default function AIInsightsPage() {
       toast({
         title: "Export Failed",
         description: "Unable to export AI insights. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     }
   };

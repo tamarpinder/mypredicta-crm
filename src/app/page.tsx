@@ -37,7 +37,7 @@ export default function Home() {
       toast({
         title: "Refresh Failed",
         description: "Unable to refresh dashboard data. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     } finally {
       setIsRefreshing(false);
@@ -74,7 +74,7 @@ export default function Home() {
       toast({
         title: "Export Failed", 
         description: "Unable to export dashboard data. Please try again.",
-        variant: "destructive",
+        type: "error",
       });
     }
   };

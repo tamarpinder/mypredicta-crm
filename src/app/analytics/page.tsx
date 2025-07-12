@@ -105,7 +105,7 @@ export default function AnalyticsPage() {
           <p className="text-sm font-medium mb-2">{label}</p>
           <div className="space-y-1">
             {payload.map((item: TooltipPayload, index: number) => (
-              <div key={`tooltip-${item.name}-${item.dataKey || index}`} className="flex items-center gap-2">
+              <div key={`tooltip-${item.name}-${index}`} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm">
                   {item.name}: {item.name.includes('Revenue') || item.name.includes('Deposits') || item.name.includes('Withdrawals') 

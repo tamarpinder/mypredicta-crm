@@ -124,6 +124,7 @@ export interface AIInsights {
     expectedEngagement: string | number;
     confidence?: number;
     potentialRevenue?: number;
+    type?: string;
   }[];
   marketingInsights?: {
     bestTimeToSend: string;
@@ -181,6 +182,10 @@ export interface AIInsights {
   totalPredictiveModels?: number;
   aiAccuracy?: number;
   lastUpdated?: string;
+  
+  // Additional properties
+  promotionalOffers?: any[];
+  experienceRecommendations?: any[];
 }
 
 export interface NavigationItem {

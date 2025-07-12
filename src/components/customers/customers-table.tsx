@@ -50,7 +50,7 @@ interface CustomersTableProps {
     vipLevel: string;
     country: string;
     search: string;
-    lastActivityDays?: string;
+    lastActivityDays: string;
   };
 }
 
