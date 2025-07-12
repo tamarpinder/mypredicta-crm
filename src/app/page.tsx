@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { LazyWrapper, ChartSkeleton, StatsSkeleton } from '@/components/ui/lazy-wrapper';
 import { sampleDashboardMetrics } from '@/data/sample-data';
-import { lazy, useState } from 'react';
+import { lazy, useState, useCallback } from 'react';
 import { useLiveNotifications } from '@/hooks/use-live-notifications';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +23,7 @@ export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { toast } = useToast();
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
       // Simulate data refresh
@@ -42,9 +42,9 @@ export default function Home() {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [toast]);
 
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     try {
       // Create export data
       const exportData = {
@@ -77,7 +77,7 @@ export default function Home() {
         type: "error",
       });
     }
-  };
+  }, [toast]);
 
   return (
     <ProtectedRoute>

@@ -12,18 +12,17 @@ interface PageTransitionProps {
 export function PageTransition({ children, className }: PageTransitionProps) {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
-  const [displayChildren, setDisplayChildren] = useState(children);
 
+  // Only animate on pathname changes, not children changes
   useEffect(() => {
     setIsLoading(true);
     
     const timer = setTimeout(() => {
-      setDisplayChildren(children);
       setIsLoading(false);
     }, 50);
 
     return () => clearTimeout(timer);
-  }, [pathname, children]);
+  }, [pathname]); // Removed children from dependencies
 
   return (
     <div className={cn('relative', className)}>
@@ -33,7 +32,7 @@ export function PageTransition({ children, className }: PageTransitionProps) {
           isLoading ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'
         )}
       >
-        {displayChildren}
+        {children}
       </div>
       
       {isLoading && (

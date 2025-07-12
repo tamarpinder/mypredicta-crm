@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { toastSuccess, toastWarning, toastError, toastInfo } from '@/hooks/use-toast';
+import { useEffect, useCallback } from 'react';
+import { useToast } from '@/hooks/use-toast';
 import { generateLotteryWinner } from '@/data/lottery-data';
 import { formatCurrency } from '@/utils/format';
 import { useNotificationStore } from '@/stores/notification-store';
@@ -84,48 +84,50 @@ const NOTIFICATION_TYPES = [
 
 export function useLiveNotifications() {
   const addNotification = useNotificationStore((state) => state.addNotification);
+  const { success, warning, error, info } = useToast();
+  
+  // Memoize the notification function to prevent useEffect dependency changes
+  const showRandomNotification = useCallback(() => {
+    // 30% chance to show a lottery winner notification
+    if (Math.random() < 0.3) {
+      const lotteryNotification = generateLotteryNotification();
+      success(lotteryNotification.title, lotteryNotification.description);
+      addNotification({
+        title: lotteryNotification.title,
+        description: lotteryNotification.description,
+        type: 'success'
+      });
+      return;
+    }
+    
+    const typeData = NOTIFICATION_TYPES[Math.floor(Math.random() * NOTIFICATION_TYPES.length)];
+    const notification = typeData.notifications[Math.floor(Math.random() * typeData.notifications.length)];
+    
+    // Add to store
+    addNotification({
+      title: notification.title,
+      description: notification.description,
+      type: typeData.type as 'success' | 'warning' | 'error' | 'info'
+    });
+    
+    // Show toast using context methods
+    switch (typeData.type) {
+      case 'success':
+        success(notification.title, notification.description);
+        break;
+      case 'warning':
+        warning(notification.title, notification.description);
+        break;
+      case 'error':
+        error(notification.title, notification.description);
+        break;
+      case 'info':
+        info(notification.title, notification.description);
+        break;
+    }
+  }, [addNotification, success, warning, error, info]);
   
   useEffect(() => {
-    const showRandomNotification = () => {
-      // 30% chance to show a lottery winner notification
-      if (Math.random() < 0.3) {
-        const lotteryNotification = generateLotteryNotification();
-        toastSuccess(lotteryNotification.title, lotteryNotification.description);
-        addNotification({
-          title: lotteryNotification.title,
-          description: lotteryNotification.description,
-          type: 'success'
-        });
-        return;
-      }
-      
-      const typeData = NOTIFICATION_TYPES[Math.floor(Math.random() * NOTIFICATION_TYPES.length)];
-      const notification = typeData.notifications[Math.floor(Math.random() * typeData.notifications.length)];
-      
-      // Add to store
-      addNotification({
-        title: notification.title,
-        description: notification.description,
-        type: typeData.type as 'success' | 'warning' | 'error' | 'info'
-      });
-      
-      // Show toast
-      switch (typeData.type) {
-        case 'success':
-          toastSuccess(notification.title, notification.description);
-          break;
-        case 'warning':
-          toastWarning(notification.title, notification.description);
-          break;
-        case 'error':
-          toastError(notification.title, notification.description);
-          break;
-        case 'info':
-          toastInfo(notification.title, notification.description);
-          break;
-      }
-    };
-
     // Show first notification after 5 seconds
     const initialTimeout = setTimeout(showRandomNotification, 5000);
     
@@ -138,17 +140,27 @@ export function useLiveNotifications() {
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, [addNotification]);
+  }, [showRandomNotification]);
 }
 
-export function triggerTestNotification() {
-  const notifications = [
-    () => toastSuccess('Test Notification', 'This is a test success notification'),
-    () => toastWarning('Test Warning', 'This is a test warning notification'),
-    () => toastError('Test Error', 'This is a test error notification'),
-    () => toastInfo('Test Info', 'This is a test info notification'),
-  ];
+// Hook version for use in components
+export function useTriggerTestNotification() {
+  const { success, warning, error, info } = useToast();
   
-  const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
-  randomNotification();
+  return useCallback(() => {
+    const notifications = [
+      () => success('Test Notification', 'This is a test success notification'),
+      () => warning('Test Warning', 'This is a test warning notification'),
+      () => error('Test Error', 'This is a test error notification'),
+      () => info('Test Info', 'This is a test info notification'),
+    ];
+    
+    const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+    randomNotification();
+  }, [success, warning, error, info]);
+}
+
+// Deprecated: Use useTriggerTestNotification hook instead
+export function triggerTestNotification() {
+  console.warn('triggerTestNotification is deprecated. Use useTriggerTestNotification hook instead.');
 }
