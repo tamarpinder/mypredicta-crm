@@ -67,12 +67,12 @@ export function LoginForm({ onLogin, onSignUpClick, isLoading = false, error }: 
       <Card className="border-[var(--color-predicta-gold)]/20 shadow-2xl bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
-            <div className="relative w-16 h-16 bg-gradient-to-br from-[var(--color-predicta-navy)] to-[var(--color-predicta-navy-dark)] rounded-xl flex items-center justify-center shadow-lg">
+            <div className="relative w-32 h-32 bg-gradient-to-br from-[var(--color-predicta-navy)] to-[var(--color-predicta-navy-dark)] rounded-xl flex items-center justify-center shadow-lg">
               <Image
                 src={COMPANY_INFO.logo}
                 alt={COMPANY_INFO.name}
-                width={40}
-                height={40}
+                width={80}
+                height={80}
                 className="object-contain"
               />
             </div>

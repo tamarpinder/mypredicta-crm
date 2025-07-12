@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('predicta_user');
-    router.push('/auth');
+    router.push('/auth?action=logout');
   };
 
   const updateUser = (userData: Partial<User>) => {
